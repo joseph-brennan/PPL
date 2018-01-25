@@ -5,8 +5,9 @@ Project 1 Mal Syntax Checking
 
 
 class MalChecking:
-    def __init__(self):
-        pass
+    def __init__(self, file_name):
+        self.file_name = file_name
+        self.mal_file = open(file_name, 'r+')
 
     def error_checking(self):
         pass
@@ -34,5 +35,7 @@ class MalChecking:
 
 
 if __name__ == '__main__':
-    Mal = MalChecking
-    print("hello world")
+    file_name = input("what is the name of the mal file?")
+
+    mal = MalChecking(file_name)
+
