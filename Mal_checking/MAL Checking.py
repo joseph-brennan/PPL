@@ -10,18 +10,21 @@ class MalChecking:
 
         self.mal_file = open(file_name, 'r')
 
-        self.log = open("log_file.txt", 'w')
+        self.log = open(file_name + ".log", 'w')
 
         self.instruction = {1: "BR", 2: "BGT", 3: "BLT", 4: "BEQ", 5: "DIV", 6: "MUL",
                             7: "DEC", 8: "SUB", 9: "INC", 10: "ADD", 11: "MOVEI", 12: "MOVE"}
 
         # each key corresponds to the line where the error takes place
         self.errors = {}
+
         # current list of errors on the line
         self.list = []
 
+        # the full line of code
         self.print_line = {}
 
+        # tracks the line numbers
         self.count = 0
 
     def read_file(self):
@@ -100,7 +103,10 @@ class MalChecking:
 
                 # did not match
                 self.list = "** error: invalid opcode"
+
+            # label comes first (known to be checked)
             elif letter is ":":
+                pass
 
             else:
                 instruction += letter
