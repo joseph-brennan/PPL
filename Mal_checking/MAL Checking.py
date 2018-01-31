@@ -12,8 +12,21 @@ class MalChecking:
 
         self.log = open("log_file.txt", 'w')
 
+        self.instruction = {1: "BR", 2: "BGT", 3: "BLT", 4: "BEQ", 5: "DIV", 6: "MUL",
+                            7: "DEC", 8: "SUB", 9: "INC", 10: "ADD", 11: "MOVEI", 12: "MOVE"}
+
+        # each key corresponds to the line where the error takes place
+        self.errors = {}
+        # current list of errors on the line
+        self.list = []
+
+        self.print_line = {}
+
+        self.count = 0
+
     def read_file(self):
         for l in self.mal_file:
+            self.count += 1
 
             # blank line move forward
             if l.__len__() is 0:
@@ -24,6 +37,7 @@ class MalChecking:
                 continue
 
             else:
+                self.print_line[self.count] = l
                 self.error_checking(l)
 
         self.mal_file.close()
@@ -31,6 +45,7 @@ class MalChecking:
         self.file_end()
 
     def error_checking(self, line):
+
         self.bad_label(line)
 
         self.invalid_opcode(line)
@@ -43,46 +58,52 @@ class MalChecking:
 
         self.warning_label(line)
 
+        self.errors[self.count] = self.list
+
+        self.list.clear()
+
     def bad_label(self, line):
+        label = ""
         for i in line:
             if i is ':':
-                pass
                 # do check this is a label
+                if len(label) > 5:
+                    # launch error code printer
+                    self.list = "** error: label violates memory rule"
+                    return
+
+                else:
+                    self.list = "null"
+                    return
+
+            # it is an instruction
+            elif i is " ":
+                return
+
+            # not yet the complete string
             else:
-                continue
+                label += i
 
     def invalid_opcode(self, line):
-        while True:
-            word = ""
-            for letter in line:
-                word += letter
+        instruction = ""
+        for letter in line:
+            if letter is " ":
+                for i in self.instruction.keys():
+                    # valid
+                    if self.instruction.get(i) is instruction:
+                        self.list = "null"
+                        return
 
-                if word is "MOVEI":
-                    pass
-                elif word is "MOVE":
-                    pass
-                elif word is "ADD":
-                    pass
-                elif word is "INC":
-                    pass
-                elif word is "SUB":
-                    pass
-                elif word is "DEC":
-                    pass
-                elif word is "MUL":
-                    pass
-                elif word is "DIV":
-                    pass
-                elif word is "BEQ":
-                    pass
-                elif word is "BLT":
-                    pass
-                elif word is "BGT":
-                    pass
-                elif word is "BR":
-                    pass
-                else:
-                    pass
+                    # not matching
+                    else:
+                        continue
+
+                # did not match
+                self.list = "** error: invalid opcode"
+            elif letter is ":":
+
+            else:
+                instruction += letter
 
     def bad_high_operands(self, line):
         pass
