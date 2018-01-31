@@ -2,13 +2,14 @@
 Joey Brennan
 Project 1 Mal Syntax Checking
 """
+import time
 
 
 class MalChecking:
     def __init__(self, file_name):
         self.file_name = file_name
 
-        self.mal_file = open(file_name, 'r')
+        self.mal_file = open(file_name + ".mal", 'r')
 
         self.log = open(file_name + ".log", 'w')
 
@@ -40,8 +41,11 @@ class MalChecking:
                 continue
 
             else:
-                self.print_line[self.count] = l
-                self.error_checking(l)
+                line = l.partition(";")
+
+                self.print_line[self.count] = line[0]
+
+                self.error_checking(line[0])
 
         self.mal_file.close()
 
@@ -66,50 +70,45 @@ class MalChecking:
         self.list.clear()
 
     def bad_label(self, line):
-        label = ""
-        for i in line:
-            if i is ':':
-                # do check this is a label
-                if len(label) > 5:
-                    # launch error code printer
-                    self.list = "** error: label violates memory rule"
-                    return
+        label = line.partition(":")
 
-                else:
-                    self.list = "null"
-                    return
-
-            # it is an instruction
-            elif i is " ":
+        if label[1] is ':':
+            if len(label[0]) > 5:
+                self.list.append("** error: memory identifier must be 5 or less")
                 return
 
-            # not yet the complete string
+            # valid label
             else:
-                label += i
+                return
+
+        # is not a label
+        else:
+            return
 
     def invalid_opcode(self, line):
-        instruction = ""
-        for letter in line:
-            if letter is " ":
-                for i in self.instruction.keys():
-                    # valid
-                    if self.instruction.get(i) is instruction:
-                        self.list = "null"
-                        return
+        instruction = line.partition(":")
 
-                    # not matching
-                    else:
-                        continue
+        if instruction[1] is ":":
+            opcode = instruction[2].partition(" ")
 
-                # did not match
-                self.list = "** error: invalid opcode"
+            for i in self.instruction.keys():
+                # valid opcode
+                if opcode is self.instruction.get(i):
+                    return
 
-            # label comes first (known to be checked)
-            elif letter is ":":
-                pass
+            self.list.append("** error: invalid opcode")
+            return
 
-            else:
-                instruction += letter
+        else:
+            opcode = instruction[0].partition(" ")
+
+            for i in self.instruction.keys():
+                # valid opcode
+                if opcode is self.instruction.get(i):
+                    return
+
+            self.list.append("** error: invalid opcode")
+            return
 
     def bad_high_operands(self, line):
         pass
@@ -126,11 +125,12 @@ class MalChecking:
     def warning_label(self, line):
         pass
 
-    def file_end(self):
+    def file_end(self,):
+        self.log.write("log file for " + self.file_name + ".mal " +
+                       " named " + self.file_name + ".log " + time.ctime + " By Joey Brennan" )
         self.log.close()
 
 
 if __name__ == '__main__':
     file_name = "mal_test"  # input("what is the name of the mal file?")
-    file_name += '.mal'
     mal = MalChecking(file_name)
