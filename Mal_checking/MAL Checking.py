@@ -52,7 +52,8 @@ class MalChecking:
         checks the branch against the labels and closes the file
         :return: at end of file read and log write
         """
-        for l in self.mal_file:
+        for i in self.mal_file:
+            l = i.strip()
             self.count += 1
 
             # blank line move forward
@@ -114,10 +115,13 @@ class MalChecking:
 
             # valid label
             else:
-                self.label.append(label[0])
+                self.label.append(label[0].strip())
 
-                if label[2] is not '':
-                    self.invalid_opcode(label[2])
+                if label[2] != '':
+                    self.invalid_opcode(label[2].strip())
+                    return
+
+                elif label[2] == '':
                     return
 
             # only a label on the line
@@ -126,12 +130,12 @@ class MalChecking:
 
             else:
                 # error on line now gets every error in line
-                self.invalid_opcode(label[2])
+                self.invalid_opcode(label[2].strip())
                 return
 
         # no label on line
         else:
-            self.invalid_opcode(label[0])
+            self.invalid_opcode(label[0].strip())
             return
 
     def invalid_opcode(self, line):
@@ -140,7 +144,7 @@ class MalChecking:
         :param line: current line of MAL without a label
         :return: all checks have been preformed
         """
-        opcode = line.lstrip().partition(" ")
+        opcode = line.partition(" ")
 
         if opcode[0] in self.instruction.values():
             # valid opcode
@@ -161,9 +165,14 @@ class MalChecking:
         :param line: instruction and its operands``
         :return: this check andd all deeper checks have been preformed
         """
-        opcode = line.lstrip().partition(" ")
+        opcode = line.partition(" ")
 
-        operands = opcode[2].split(", ")
+        operand = opcode[2].split(",")
+
+        operands = []
+
+        for op in operand:
+            operands.append(op.strip())
 
         switch = 0
 
@@ -439,6 +448,7 @@ class MalChecking:
         :param operand: the operands of the instruction
         :return: after saving the branch label for the end of the file
         """
+        # BR
         if opcode == self.instruction.get(1):
             try:
                 self.branch[self.count] = operand
@@ -446,6 +456,7 @@ class MalChecking:
             except IndexError:
                 pass
 
+        # BGT or BLT or BEQ
         elif opcode == self.instruction.get(4) or opcode == self.instruction.get(3) or opcode == self.instruction.get(2):
             try:
                 self.branch[self.count] = operand[2]
@@ -459,7 +470,7 @@ class MalChecking:
         :return: finished witting and closed the log filed
         """
         self.log.write("MAL file checker for: {}.mal log file, named {}.log {}. By Joey Brennan CS 3210\n".format(
-                        self.file_name, self.file_name, time.ctime()))
+            self.file_name, self.file_name, time.ctime()))
 
         self.log.write("-------------------------------------------------------\n")
 
@@ -508,7 +519,7 @@ class MalChecking:
                 self.error_count["wrong operand type"] = self.error_count.get("wrong operand type") + 1
                 return
 
-        elif source.isalpha() is False:
+        elif source.lower().isalpha() is False:
             self.list.append("** error: source can only contains letters")
 
             self.error_count["wrong operand type"] = self.error_count.get("wrong operand type") + 1
@@ -595,17 +606,35 @@ class MalChecking:
         for the final error check
         :return: after writing a error if the label branching to doesn't exist
         """
+
+        print("{} branch".format(self.branch))
+        print("{} label".format(self.label))
         for key in self.branch.keys():
-            if self.branch.get(key) != self.label:
+            print("{} current branch".format(self.branch.get(key)))
+            print("{}".format(self.branch.get(key) in self.label))
+            if self.branch.get(key) not in self.label:
                 self.errors[key].append("** error: branch is to label that isn't defined")
 
-                self.error_count["wrong operand type"] = self.error_count.get("wrong operand type") + 1
+                self.error_count["label warnings"] = self.error_count.get("label warnings") + 1
 
             else:
                 continue
 
 
 if __name__ == '__main__':
-    name = "mal_test"  # input("what is the name of the mal file?")
-    mal = MalChecking(name)
+    name = "mal_test"  # input("what is the name of the MAL file?")
+    name1 = "mal_test1"
+    name2 = "mal_test2"
+    name3 = "mal_test3"
+
+    # mal = MalChecking(name)
+    # mal.read_file()
+
+    mal = MalChecking(name1)
     mal.read_file()
+
+    # mal = MalChecking(name2)
+    # mal.read_file()
+
+    # mal = MalChecking(name3)
+    # mal.read_file()
