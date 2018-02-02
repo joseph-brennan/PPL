@@ -14,9 +14,9 @@ class MalChecking:
         """
         self.file_name = file_name
 
-        self.mal_file = open(file_name + ".mal", 'r')
+        self.mal_file = open("{}.mal".format(file_name), 'r')
 
-        self.log = open(file_name + ".log", 'w')
+        self.log = open("{}.log".format(file_name), 'w')
 
         self.instruction = {1: "BR", 2: "BGT", 3: "BLT", 4: "BEQ", 5: "DIV", 6: "MUL",
                             7: "DEC", 8: "SUB", 9: "INC", 10: "ADD", 11: "MOVEI", 12: "MOVE"}
@@ -57,7 +57,7 @@ class MalChecking:
             self.count += 1
 
             # blank line move forward
-            if l is '\n':
+            if l == '\n' or l == '':
                 continue
 
             # skip the comments
@@ -66,7 +66,7 @@ class MalChecking:
 
             # known end of file
             if l == "END":
-                continue
+                break
 
             else:
                 line = l.partition(';')
@@ -102,38 +102,47 @@ class MalChecking:
         """
         label = line.partition(":")
 
-        if label[1] is ':':
-            if len(label[0]) > 5:
-                self.list.append("** error: label memory identifier must be 5 or less")
-
-                self.error_count["ill-formed label"] = self.error_count.get("ill-formed label") + 1
-
-            elif label[0].isalpha() is False:
-                self.list.append("** error: memory location can only contain letters")
-
-                self.error_count["ill-formed label"] = self.error_count.get("ill-formed label") + 1
-
-            # valid label
-            else:
-                self.label.append(label[0].strip())
-
-                if label[2] != '':
-                    self.invalid_opcode(label[2].strip())
-                    return
-
-                elif label[2] == '':
-                    return
-
-            # only a label on the line
+        # there is a label
+        if label[1] == ':':
+            # only a label
             if label[2] == '':
+                if not label[0].isalpha():
+                    self.list.append("** error: label can only contains letters")
+
+                    self.error_count["ill-formed label"] += 1
+
+                elif len(label[0]) > 5:
+                    self.list.append("** error: label can at most be 5 char long")
+
+                    self.error_count["ill-formed label"] += 1
+
+                # valid label
+                else:
+                    self.label.append(label[0])
+
                 return
 
+            # label on line
             else:
-                # error on line now gets every error in line
+                if not label[0].isalpha():
+                    self.list.append("** error: label can only contains letters")
+
+                    self.error_count["ill-formed label"] += 1
+
+                elif len(label[0]) > 5:
+                    self.list.append("** error: label can at most be 5 char long")
+
+                    self.error_count["ill-formed label"] += 1
+
+                # valid label
+                else:
+                    self.label.append(label[0])
+
                 self.invalid_opcode(label[2].strip())
+
                 return
 
-        # no label on line
+        # no label
         else:
             self.invalid_opcode(label[0].strip())
             return
@@ -154,7 +163,7 @@ class MalChecking:
         else:
             self.list.append("** error: invalid opcode")
 
-            self.error_count["invalid opcode"] = self.error_count.get("invalid opcode") + 1
+            self.error_count["invalid opcode"] += 1
 
             self.bad_operands(line)
             return
@@ -185,133 +194,133 @@ class MalChecking:
                 if len(operands) > 1:
                     self.list.append("** error: can only have one label for BR")
 
-                    self.error_count["too many operands"] = self.error_count.get("too many operands") + 1
+                    self.error_count["too many operands"] += 1
 
                 elif len(operands) < 1:
                     self.list.append("** error: needs one label for BR")
 
-                    self.error_count["too few operands"] = self.error_count.get("too few operands") + 1
+                    self.error_count["too few operands"] += 1
 
             elif switch == 2:
                 if len(operands) > 3:
                     self.list.append("** error: can only have 3 arguments in BLT")
 
-                    self.error_count["too many operands"] = self.error_count.get("too many operands") + 1
+                    self.error_count["too many operands"] += 1
 
                 elif len(operands) < 3:
                     self.list.append("** error: needs 3 arguments for BLT two to compare third label")
 
-                    self.error_count["too few operands"] = self.error_count.get("too few operands") + 1
+                    self.error_count["too few operands"] += 1
 
             elif switch == 3:
                 if len(operands) > 3:
                     self.list.append("** error: can only have 3 arguments in BLT")
 
-                    self.error_count["too many operands"] = self.error_count.get("too many operands") + 1
+                    self.error_count["too many operands"] += 1
 
                 elif len(operands) < 3:
                     self.list.append("** error: needs 3 arguments for BLT, two to compare, third label")
 
-                    self.error_count["too few operands"] = self.error_count.get("too few operands") + 1
+                    self.error_count["too few operands"] += 1
 
             elif switch == 4:
                 if len(operands) > 3:
                     self.list.append("** error: can only have 3 arguments in BEQ")
 
-                    self.error_count["too many operands"] = self.error_count.get("too many operands") + 1
+                    self.error_count["too many operands"] += 1
 
                 elif len(operands) < 3:
                     self.list.append("** error: needs 3 arguments for BEQ, two to compare, third label")
 
-                    self.error_count["too few operands"] = self.error_count.get("too few operands") + 1
+                    self.error_count["too few operands"] += 1
 
             elif switch == 5:
                 if len(operands) > 3:
                     self.list.append("** error: can only have two inputs and a destination DIV")
 
-                    self.error_count["too many operands"] = self.error_count.get("too many operands") + 1
+                    self.error_count["too many operands"] += 1
 
                 elif len(operands) < 3:
                     self.list.append("** error: needs two inputs and a destination for DIV")
 
-                    self.error_count["too few operands"] = self.error_count.get("too few operands") + 1
+                    self.error_count["too few operands"] += 1
 
             elif switch == 6:
                 if len(operands) > 3:
                     self.list.append("** error: can only have two inputs and a destination MUL")
 
-                    self.error_count["too many operands"] = self.error_count.get("too many operands") + 1
+                    self.error_count["too many operands"] += 1
 
                 elif len(operands) < 3:
                     self.list.append("** error: need two inputs and a destination for MUL")
 
-                    self.error_count["too few operands"] = self.error_count.get("too few operands") + 1
+                    self.error_count["too few operands"] += 1
 
             elif switch == 7:
                 if len(operands) > 1:
                     self.list.append("** error: can only have one source location for DEC")
 
-                    self.error_count["too many operands"] = self.error_count.get("too many operands") + 1
+                    self.error_count["too many operands"] += 1
 
                 elif len(operands) < 1:
                     self.list.append("** error: needs one at least one source DEC")
 
-                    self.error_count["too few operands"] = self.error_count.get("too few operands") + 1
+                    self.error_count["too few operands"] += 1
 
             elif switch == 8:
                 if len(operands) > 3:
                     self.list.append("** error: can only have two inputs and a destination SUB")
 
-                    self.error_count["too many operands"] = self.error_count.get("too many operands") + 1
+                    self.error_count["too many operands"] += 1
 
                 elif len(operands) < 3:
                     self.list.append("** error: need two inputs and a destination for SUB")
 
-                    self.error_count["too few operands"] = self.error_count.get("too few operands") + 1
+                    self.error_count["too few operands"] += 1
 
             elif switch == 9:
                 if len(operands) > 1:
                     self.list.append("** error: can only have one source location for INC")
 
-                    self.error_count["too many operands"] = self.error_count.get("too many operands") + 1
+                    self.error_count["too many operands"] += 1
 
                 elif len(operands) < 1:
                     self.list.append("** error: needs one at least one source INC")
 
-                    self.error_count["too few operands"] = self.error_count.get("too few operands") + 1
+                    self.error_count["too few operands"] += 1
 
             elif switch == 10:
                 if len(operands) > 3:
                     self.list.append("** error: can only have two inputs and a destination ADD")
 
-                    self.error_count["too many operands"] = self.error_count.get("too many operands") + 1
+                    self.error_count["too many operands"] += 1
 
                 elif len(operands) < 3:
                     self.list.append("** error: need two inputs and a destination for ADD")
 
-                    self.error_count["too few operands"] = self.error_count.get("too few operands") + 1
+                    self.error_count["too few operands"] += 1
 
             elif switch == 11:
                 if len(operands) > 2:
                     self.list.append("** error: must have one immediate and one destination MOVEI")
 
-                    self.error_count["too many operands"] = self.error_count.get("too many operands") + 1
+                    self.error_count["too many operands"] += 1
 
                 elif len(operands) < 2:
                     self.list.append("** error: needs one immediate and one destination MOVIE")
 
-                    self.error_count["too few operands"] = self.error_count.get("too few operands") + 1
+                    self.error_count["too few operands"] += 1
 
             elif switch == 12:
                 if len(operands) > 2:
                     self.list.append("** error: must have one source and one destination MOVE")
 
-                    self.error_count["too many operands"] = self.error_count.get("too many operands") + 1
+                    self.error_count["too many operands"] += 1
 
                 elif len(operands) < 2:
                     self.list.append("** error: needs one source and one destination MOVE")
 
-                    self.error_count["too few operands"] = self.error_count.get("too few operands") + 1
+                    self.error_count["too few operands"] += 1
 
         self.wrong_operands(opcode[0], operands)
         return
@@ -340,12 +349,12 @@ class MalChecking:
                 except IndexError:
                     self.list.append("** error: no destination")
 
-                    self.error_count["ill-formed operands"] = self.error_count.get("ill-formed operands") + 1
+                    self.error_count["ill-formed operands"] += 1
 
             except IndexError:
                 self.list.append("** error: no source")
 
-                self.error_count["ill-formed operands"] = self.error_count.get("ill-formed operands") + 1
+                self.error_count["ill-formed operands"] += 1
 
         # MoveI
         elif switch == 11:
@@ -358,12 +367,12 @@ class MalChecking:
                 except IndexError:
                     self.list.append("** error: no destination")
 
-                    self.error_count["ill-formed operands"] = self.error_count.get("ill-formed operands") + 1
+                    self.error_count["ill-formed operands"] += 1
 
             except IndexError:
                 self.list.append("** error: no source")
 
-                self.error_count["ill-formed operands"] = self.error_count.get("ill-formed operands") + 1
+                self.error_count["ill-formed operands"] += 1
 
         # Add or Sub or Mul or Div
         elif switch == 10 or switch == 8 or switch == 6 or switch == 5:
@@ -380,17 +389,17 @@ class MalChecking:
                     except IndexError:
                         self.list.append("** error: missing destination")
 
-                        self.error_count["ill-formed operands"] = self.error_count.get("ill-formed operands") + 1
+                        self.error_count["ill-formed operands"] += 1
 
                 except IndexError:
                     self.list.append("** error: second source missing")
 
-                    self.error_count["ill-formed operands"] = self.error_count.get("ill-formed operands") + 1
+                    self.error_count["ill-formed operands"] += 1
 
             except IndexError:
                 self.list.append("** error: first source missing")
 
-                self.error_count["ill-formed operands"] = self.error_count.get("ill-formed operands") + 1
+                self.error_count["ill-formed operands"] += 1
 
         # Inc or Dec
         elif switch == 9 or switch == 7:
@@ -400,7 +409,7 @@ class MalChecking:
             except IndexError:
                 self.list.append("** error: missing source")
 
-                self.error_count["ill-formed operands"] = self.error_count.get("ill-formed operands") + 1
+                self.error_count["ill-formed operands"] += 1
 
         # Beq or Blt or Bgt
         elif switch == 4 or switch == 3 or switch == 2:
@@ -416,17 +425,17 @@ class MalChecking:
                     except IndexError:
                         self.list.append("** error: missing label")
 
-                        self.error_count["ill-formed operands"] = self.error_count.get("ill-formed operands") + 1
+                        self.error_count["ill-formed operands"] += 1
 
                 except IndexError:
                     self.list.append("** error: missing second source")
 
-                    self.error_count["ill-formed operands"] = self.error_count.get("ill-formed operands") + 1
+                    self.error_count["ill-formed operands"] += 1
 
             except IndexError:
                 self.list.append("** error: missing first source")
 
-                self.error_count["ill-formed operands"] = self.error_count.get("ill-formed operands") + 1
+                self.error_count["ill-formed operands"] += 1
 
         # Br
         elif switch == 1:
@@ -436,7 +445,7 @@ class MalChecking:
             except IndexError:
                 self.list.append("** error: no label")
 
-                self.error_count["ill-formed operands"] = self.error_count.get("ill-formed operands") + 1
+                self.error_count["ill-formed operands"] += 1
 
         self.warning_label(opcode, operand)
 
@@ -451,30 +460,144 @@ class MalChecking:
         # BR
         if opcode == self.instruction.get(1):
             try:
-                self.branch[self.count] = operand
+                self.branch[self.count] = operand[0]
 
             except IndexError:
                 pass
 
         # BGT or BLT or BEQ
-        elif opcode == self.instruction.get(4) or opcode == self.instruction.get(3) or opcode == self.instruction.get(2):
+        elif opcode == self.instruction.get(4) or opcode == self.instruction.get(3) or \
+                        opcode == self.instruction.get(2):
             try:
                 self.branch[self.count] = operand[2]
 
             except IndexError:
                 pass
 
+    # check of source correctness
+    def source_check(self, source):
+        """
+        checks that source operands are of the right type
+        :param source: a source operand
+        :return: after checking and writing to an error if it found one
+        """
+        if source[0] == "R" and source[1].isdigit():
+            if source not in self.register.values():
+                self.list.append("** error: registers are only between 0 and 7")
+
+                self.error_count["wrong operand type"] += 1
+                return
+
+        elif source.lower().isalpha() is False:
+            self.list.append("** error: source can only contains letters")
+
+            self.error_count["wrong operand type"] += 1
+            return
+
+        elif len(source) > 5:
+            self.list.append("** error: source can at most be 5 char long")
+
+            self.error_count["wrong operand type"] += 1
+            return
+
+    # check of destination correctness
+    def destination_check(self, destination):
+        """
+        check that the destination operands are of teh right type
+        (almost the same as the source but it has different error code to be more useful)
+        :param destination: a destination operand
+        :return: after checking and writing its error if it found one
+        """
+        if destination[0] == "R" and destination[1].isdigit():
+            if destination not in self.register.values():
+                self.list.append("** error: registers are only between 0 and 7")
+
+                self.error_count["wrong operand type"] += 1
+                return
+
+        elif destination.isalpha() is False:
+            self.list.append("** error: destination can only contains letters")
+
+            self.error_count["wrong operand type"] += 1
+            return
+
+        elif len(destination) > 5:
+            self.list.append("** error: destination can at most be 5 char long")
+
+            self.error_count["wrong operand type"] += 1
+            return
+
+    # check of integer value
+    def immediate_check(self, immediate):
+        """
+        checks that there is an octal immediate value
+        :param immediate: what should be an octal number
+        :return: after checking and writing an error if found
+        """
+        if immediate.isdigit():
+            for number in immediate:
+                if int(number) > 7:
+                    self.list.append("** error: number is not in octal")
+
+                    self.error_count["wrong operand type"] += 1
+                    return
+            return
+
+        else:
+            self.list.append("** error: immediate value expected")
+
+            self.error_count["wrong operand type"] += 1
+            return
+
+    # check of label to branch
+    def label_check(self, label):
+        """
+        check that a branch label is a valid memroy location and later the label is checked for if the label is a label
+        in the code
+        :param label: a memroy location
+        :return: checks that the label and rights an error if found
+        """
+        if not label.isalpha():
+            self.list.append("** error: label can only contains letters")
+
+            self.error_count["wrong operand type"] += 1
+            return
+
+        elif len(label) > 5:
+            self.list.append("** error: label can at most be 5 char long")
+
+            self.error_count["wrong operand type"] += 1
+            return
+
+    def branch_checker(self):
+        """
+        checks the valid labels in the code against the branch instruction labels after the whole file as been read
+        for the final error check
+        :return: after writing a error if the label branching to doesn't exist
+        """
+        for key in self.branch.keys():
+            if self.branch.get(key) not in self.label:
+                self.errors[key].append("** error: branch is to label that isn't defined")
+
+                self.error_count["label warnings"] += 1
+
+            else:
+                continue
+
     def file_end(self):
         """
         this writes to the log file all the information that the error checking has done
         :return: finished witting and closed the log filed
         """
-        self.log.write("MAL file checker for: {}.mal log file, named {}.log {}. By Joey Brennan CS 3210\n".format(
+        self.log.write("MAL file checker for: {}.mal log file, named {}.log, {}, By Joey Brennan CS 3210\n".format(
             self.file_name, self.file_name, time.ctime()))
 
         self.log.write("-------------------------------------------------------\n")
 
+        true_count = 0
         for line in sorted(self.print_line.keys()):
+            true_count += 1
+
             self.log.write("{}: {}\n".format(line, self.print_line.get(line)))
 
             if line in self.errors.keys():
@@ -490,7 +613,7 @@ class MalChecking:
         for key in sorted(self.error_count.keys()):
             count += self.error_count.get(key)
 
-        self.log.write("total errors = {}\n".format(count))
+        self.log.write("total lines of code = {} \ntotal errors = {}\n".format(true_count, count))
 
         for key in sorted(self.error_count.keys()):
             self.log.write("{} {}\n".format(self.error_count.get(key), key))
@@ -505,136 +628,23 @@ class MalChecking:
 
         self.log.close()
 
-    # check of source correctness
-    def source_check(self, source):
-        """
-        checks that source operands are of the right type
-        :param source: a source operand
-        :return: after checking and writing to an error if it found one
-        """
-        if source[0] == "R" and source[1].isdigit():
-            if source not in self.register.values():
-                self.list.append("** error: registers are only between 0 and 7")
-
-                self.error_count["wrong operand type"] = self.error_count.get("wrong operand type") + 1
-                return
-
-        elif source.lower().isalpha() is False:
-            self.list.append("** error: source can only contains letters")
-
-            self.error_count["wrong operand type"] = self.error_count.get("wrong operand type") + 1
-            return
-
-        elif len(source) > 5:
-            self.list.append("** error: source can at most be 5 char long")
-
-            self.error_count["wrong operand type"] = self.error_count.get("wrong operand type") + 1
-            return
-
-    # check of destination correctness
-    def destination_check(self, destination):
-        """
-        check that the destination operands are of teh right type
-        (almost the same as the source but it has different error code to be more useful)
-        :param destination: a destination operand
-        :return: after checking and writing its error if it found one
-        """
-        if destination[0] == "R" and destination[1].isdigit():
-            if destination not in self.register.values():
-                self.list.append("** error: registers are only between 0 and 7")
-
-                self.error_count["wrong operand type"] = self.error_count.get("wrong operand type") + 1
-                return
-
-        elif destination.isalpha() is False:
-            self.list.append("** error: destination can only contains letters")
-
-            self.error_count["wrong operand type"] = self.error_count.get("wrong operand type") + 1
-            return
-
-        elif len(destination) > 5:
-            self.list.append("** error: destination can at most be 5 char long")
-
-            self.error_count["wrong operand type"] = self.error_count.get("wrong operand type") + 1
-            return
-
-    # check of integer value
-    def immediate_check(self, immediate):
-        """
-        checks that there is an octal immediate value
-        :param immediate: what should be an octal number
-        :return: after checking and writing an error if found
-        """
-        if immediate.isdigit():
-            for number in immediate:
-                if int(number) > 7:
-                    self.list.append("** error: number is not in octal")
-
-                    self.error_count["wrong operand type"] = self.error_count.get("wrong operand type") + 1
-                    return
-            return
-
-        else:
-            self.list.append("** error: immediate value expected")
-
-            self.error_count["wrong operand type"] = self.error_count.get("wrong operand type") + 1
-            return
-
-    # check of label to branch
-    def label_check(self, label):
-        """
-        check that a branch label is a valid memroy location and later the label is checked for if the label is a label
-        in the code
-        :param label: a memroy location
-        :return: checks that the label and rights an error if found
-        """
-        if not label.isalpha():
-            self.list.append("** error: label can only contains letters")
-
-            self.error_count["wrong operand type"] = self.error_count.get("wrong operand type") + 1
-            return
-
-        elif len(label) > 5:
-            self.list.append("** error: label can at most be 5 char long")
-
-            self.error_count["wrong operand type"] = self.error_count.get("wrong operand type") + 1
-            return
-
-    def branch_checker(self):
-        """
-        checks the valid labels in the code against the branch instruction labels after the whole file as been read
-        for the final error check
-        :return: after writing a error if the label branching to doesn't exist
-        """
-
-        print("{} branch".format(self.branch))
-        print("{} label".format(self.label))
-        for key in self.branch.keys():
-            print("{} current branch".format(self.branch.get(key)))
-            print("{}".format(self.branch.get(key) in self.label))
-            if self.branch.get(key) not in self.label:
-                self.errors[key].append("** error: branch is to label that isn't defined")
-
-                self.error_count["label warnings"] = self.error_count.get("label warnings") + 1
-
-            else:
-                continue
-
 
 if __name__ == '__main__':
-    name = "mal_test"  # input("what is the name of the MAL file?")
-    name1 = "mal_test1"
-    name2 = "mal_test2"
-    name3 = "mal_test3"
+    while True:
+        name = input("what is the name of the MAL file? ")
 
-    # mal = MalChecking(name)
-    # mal.read_file()
+        mal = MalChecking(name)
+        mal.read_file()
 
-    mal = MalChecking(name1)
-    mal.read_file()
+        loop = input("would you like to check another file Y/n? ")
 
-    # mal = MalChecking(name2)
-    # mal.read_file()
+        if loop.lower() == "no" or loop.lower() == "n":
+            break
 
-    # mal = MalChecking(name3)
-    # mal.read_file()
+        elif loop.lower() != "yes" or loop.lower() != "y":
+            print("Invalid input shutdown")
+            exit(1)
+
+        else:
+            continue
+
