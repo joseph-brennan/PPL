@@ -59,6 +59,8 @@ class MalChecking:
 
                 self.error_checking(line[0].strip())
 
+        self.branch_checker()
+
         self.mal_file.close()
 
         self.file_end()
@@ -303,8 +305,24 @@ class MalChecking:
             except IndexError:
                 self.list.append("** error: no label")
 
+        self.warning_label(opcode, operand)
+
     def warning_label(self, opcode, operand):
-        pass
+        if opcode == self.instruction.get(1):
+            try:
+                self.branch[self.count] = operand
+
+            except IndexError:
+                pass
+
+        elif opcode == self.instruction.get(4) or opcode == self.instruction.get(3) or opcode == self.instruction.get(2):
+            try:
+                self.branch[self.count] = operand[2]
+
+            except IndexError:
+                pass
+
+
 
     def file_end(self):
         self.log.write("log file for " + self.file_name + ".mal " +
@@ -329,7 +347,6 @@ class MalChecking:
 
     # check of source correctness
     def source_check(self, source):
-        print(source + " source")
         if source[0] == "R" and source[1].isdigit():
             if source not in self.register.values():
                 self.list.append("** error: registers are only between 0 and 7")
@@ -379,6 +396,14 @@ class MalChecking:
         elif not len(label) > 5:
             self.list.append("** error: label can at most be 5 char long")
             return
+
+    def branch_checker(self):
+        for key in self.branch.keys():
+            if self.branch.get(key) != self.label:
+                self.errors[key].append("** error: branch is to label that isn't defined")
+
+            else:
+                continue
 
 
 if __name__ == '__main__':
