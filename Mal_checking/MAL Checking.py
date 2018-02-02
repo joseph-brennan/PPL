@@ -53,23 +53,23 @@ class MalChecking:
         :return: at end of file read and log write
         """
         for i in self.mal_file:
-            l = i.strip()
+            line = i.strip()
             self.count += 1
 
             # blank line move forward
-            if l == '\n' or l == '':
+            if line == '\n' or line == '':
                 continue
 
             # skip the comments
-            if l.startswith(";"):
+            if line.startswith(";"):
                 continue
 
             # known end of file
-            if l == "END":
+            if line == "END":
                 break
 
             else:
-                line = l.partition(';')
+                line = line.partition(';')
 
                 self.print_line[self.count] = line[0].strip()
 
@@ -153,30 +153,30 @@ class MalChecking:
         :param line: current line of MAL without a label
         :return: all checks have been preformed
         """
-        opcode = line.partition(" ")
+        op_code = line.partition(" ")
 
-        if opcode[0] in self.instruction.values():
-            # valid opcode
+        if op_code[0] in self.instruction.values():
+            # valid op_code
             self.bad_operands(line)
             return
 
         else:
-            self.list.append("** error: invalid opcode")
+            self.list.append("** error: invalid op_code")
 
-            self.error_count["invalid opcode"] += 1
+            self.error_count["invalid op_code"] += 1
 
             self.bad_operands(line)
             return
 
     def bad_operands(self, line):
         """
-        splits out the instruction from its operands and checks that the opcode has the right number of operands
+        splits out the instruction from its operands and checks that the op_code has the right number of operands
         :param line: instruction and its operands``
-        :return: this check andd all deeper checks have been preformed
+        :return: this check and all deeper checks have been preformed
         """
-        opcode = line.partition(" ")
+        op_code = line.partition(" ")
 
-        operand = opcode[2].split(",")
+        operand = op_code[2].split(",")
 
         operands = []
 
@@ -185,9 +185,9 @@ class MalChecking:
 
         switch = 0
 
-        if opcode[0] in self.instruction.values():
+        if op_code[0] in self.instruction.values():
             for key in self.instruction.keys():
-                if self.instruction.get(key) == opcode[0]:
+                if self.instruction.get(key) == op_code[0]:
                     switch = key
 
             if switch == 1:
@@ -322,21 +322,21 @@ class MalChecking:
 
                     self.error_count["too few operands"] += 1
 
-        self.wrong_operands(opcode[0], operands)
+        self.wrong_operands(op_code[0], operands)
         return
 
-    def wrong_operands(self, opcode, operand):
+    def wrong_operands(self, op_code, operand):
         """
         using the work performed before to separate the instruction from its operands it checks each type of operand in
         the instruction is the correct type
-        :param opcode: the instruction
+        :param op_code: the instruction
         :param operand: the operands for the instruction
         :return: this and the last error check have been performed
         """
         switch = 0
 
         for key in self.instruction.keys():
-            if self.instruction.get(key) == opcode:
+            if self.instruction.get(key) == op_code:
                 switch = key
         # Move
         if switch == 12:
@@ -447,18 +447,18 @@ class MalChecking:
 
                 self.error_count["ill-formed operands"] += 1
 
-        self.warning_label(opcode, operand)
+        self.warning_label(op_code, operand)
 
-    def warning_label(self, opcode, operand):
+    def warning_label(self, op_code, operand):
         """
         If there is a branch instruction add it to a dictionary keyed by the line number where the instruction is found
         so at the end of the file it can be compared to the list of labels
-        :param opcode: what should be a branch instruction
+        :param op_code: what should be a branch instruction
         :param operand: the operands of the instruction
         :return: after saving the branch label for the end of the file
         """
         # BR
-        if opcode == self.instruction.get(1):
+        if op_code == self.instruction.get(1):
             try:
                 self.branch[self.count] = operand[0]
 
@@ -466,8 +466,10 @@ class MalChecking:
                 pass
 
         # BGT or BLT or BEQ
-        elif opcode == self.instruction.get(4) or opcode == self.instruction.get(3) or \
-                        opcode == self.instruction.get(2):
+        elif op_code == self.instruction.get(4) or \
+                        op_code == self.instruction.get(3) or \
+                        op_code == self.instruction.get(2):
+
             try:
                 self.branch[self.count] = operand[2]
 
@@ -552,9 +554,9 @@ class MalChecking:
     # check of label to branch
     def label_check(self, label):
         """
-        check that a branch label is a valid memroy location and later the label is checked for if the label is a label
+        check that a branch label is a valid memory location and later the label is checked for if the label is a label
         in the code
-        :param label: a memroy location
+        :param label: a memory location
         :return: checks that the label and rights an error if found
         """
         if not label.isalpha():
@@ -589,7 +591,7 @@ class MalChecking:
         this writes to the log file all the information that the error checking has done
         :return: finished witting and closed the log filed
         """
-        self.log.write("MAL file checker for: {}.mal log file, named {}.log, {}, By Joey Brennan CS 3210\n".format(
+        self.log.write("MAL File Checker for: {}.mal log file, named {}.log, {}, By Joey Brennan CS 3210\n".format(
             self.file_name, self.file_name, time.ctime()))
 
         self.log.write("-------------------------------------------------------\n")
@@ -613,7 +615,7 @@ class MalChecking:
         for key in sorted(self.error_count.keys()):
             count += self.error_count.get(key)
 
-        self.log.write("total lines of code = {} \ntotal errors = {}\n".format(true_count, count))
+        self.log.write("total lines of code = {}\ntotal errors = {}\n".format(true_count, count))
 
         for key in sorted(self.error_count.keys()):
             self.log.write("{} {}\n".format(self.error_count.get(key), key))
@@ -647,4 +649,3 @@ if __name__ == '__main__':
 
         else:
             continue
-
