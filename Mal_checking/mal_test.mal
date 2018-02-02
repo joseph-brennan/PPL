@@ -1,4 +1,19 @@
 ; I'm a comment yay
 
-;also a comment
+;also a comment after a space
+melab: ;valid label
 
+badlabel: ; bad label
+
+
+ADD R0, R1, R2 ; good
+BAD R1, count, R2 ; bad opcode
+
+ADD R1 ; bad operation
+
+ADD R8, R0, R1 ; R8 isnt a valid register
+
+DEC counter ; label warning
+another: BR melab ; good label with bad label for irony
+
+END
