@@ -12,36 +12,41 @@ class MalChecking:
 
         :param file_name: name of the mall file to check
         """
+        # saved file name
         self.file_name = file_name
 
         self.mal_file = open("{}.mal".format(file_name), 'r')
 
         self.log = open("{}.log".format(file_name), 'w')
 
+        # known instruction codes in MAL
         self.instruction = {1: "BR", 2: "BGT", 3: "BLT", 4: "BEQ", 5: "DIV", 6: "MUL",
                             7: "DEC", 8: "SUB", 9: "INC", 10: "ADD", 11: "MOVEI", 12: "MOVE"}
 
+        # available registers in MAL
         self.register = {1: "R0", 2: "R1", 3: "R2", 4: "R3", 5: "R4", 6: "R5", 7: "R6", 8: "R7"}
 
         # each key corresponds to the line where the error takes place
+        # which holds the list of evey error in that line
         self.errors = {}
 
         # current list of errors on the line
+        # copied to error dictionary
         self.list = []
 
-        # the full line of code
+        # the full line of code unedited
         self.print_line = {}
 
-        # tracks the line numbers
+        # tracks the line numbers and uses them for keys
         self.count = 0
 
-        # list of labels
+        # list of labels in code
         self.label = []
 
-        # list of branch locations
+        # list of branch to memory locations
         self.branch = {}
 
-        # count of each error that occurred
+        # count of each error that occurred in file
         self.error_count = {"ill-formed label": 0, "invalid op_code": 0, "too many operands": 0,
                             "too few operands": 0, "ill-formed operands": 0,
                             "wrong operand type": 0, "label warnings": 0}
@@ -578,6 +583,7 @@ class MalChecking:
         """
         for key in self.branch.keys():
             if self.branch.get(key) not in self.label:
+
                 self.errors[key].append("** error: branch is to label that isn't defined")
 
                 self.error_count["label warnings"] += 1
