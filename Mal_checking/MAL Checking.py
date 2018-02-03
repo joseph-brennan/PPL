@@ -467,8 +467,8 @@ class MalChecking:
 
         # BGT or BLT or BEQ
         elif op_code == self.instruction.get(4) or \
-                        op_code == self.instruction.get(3) or \
-                        op_code == self.instruction.get(2):
+                op_code == self.instruction.get(3) or \
+                op_code == self.instruction.get(2):
 
             try:
                 self.branch[self.count] = operand[2]
