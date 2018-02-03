@@ -42,7 +42,7 @@ class MalChecking:
         self.branch = {}
 
         # count of each error that occurred
-        self.error_count = {"ill-formed label": 0, "invalid opcode": 0, "too many operands": 0,
+        self.error_count = {"ill-formed label": 0, "invalid op_code": 0, "too many operands": 0,
                             "too few operands": 0, "ill-formed operands": 0,
                             "wrong operand type": 0, "label warnings": 0}
 
@@ -138,16 +138,16 @@ class MalChecking:
                 else:
                     self.label.append(label[0])
 
-                self.invalid_opcode(label[2].strip())
+                self.invalid_op_code(label[2].strip())
 
                 return
 
         # no label
         else:
-            self.invalid_opcode(label[0].strip())
+            self.invalid_op_code(label[0].strip())
             return
 
-    def invalid_opcode(self, line):
+    def invalid_op_code(self, line):
         """
         current line of code without a label if there was one, verifies that the instruction code is a valid MAL one
         :param line: current line of MAL without a label
@@ -642,10 +642,6 @@ if __name__ == '__main__':
 
         if loop.lower() == "no" or loop.lower() == "n":
             break
-
-        elif loop.lower() != "yes" or loop.lower() != "y":
-            print("Invalid input shutdown")
-            exit(1)
 
         else:
             continue
