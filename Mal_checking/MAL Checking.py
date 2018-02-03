@@ -87,7 +87,6 @@ class MalChecking:
         :param line: current line of non empty string
         :return: when the line is finished the checks returns for next line in file
         """
-
         self.bad_label(line)
 
         self.errors[self.count] = self.list.copy()
@@ -642,6 +641,14 @@ if __name__ == '__main__':
 
         if loop.lower() == "no" or loop.lower() == "n":
             break
+
+        elif loop.strip() == "":
+            continue
+
+        elif loop.lower() != "yes" or loop.lower() != "y":
+            print("error not a valid input shutting down")
+
+            exit(1)
 
         else:
             continue
