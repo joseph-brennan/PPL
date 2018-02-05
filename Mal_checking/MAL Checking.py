@@ -9,14 +9,13 @@ class MalChecking:
     def __init__(self, file_name):
         """
         initial set up of the language definition with the known syntax of MAL
-
         :param file_name: name of the mall file to check
         """
         # saved file name
         self.file_name = file_name
 
+        # open the Mal and log files
         self.mal_file = open("{}.mal".format(file_name), 'r')
-
         self.log = open("{}.log".format(file_name), 'w')
 
         # known instruction codes in MAL
@@ -171,6 +170,7 @@ class MalChecking:
 
             self.error_count["invalid op_code"] += 1
 
+            # now checking for more then one error
             self.bad_operands(line)
             return
 
@@ -196,9 +196,11 @@ class MalChecking:
                 if self.instruction.get(key) == op_code[0]:
                     switch = key
 
+            # BR, DEC, and INC
             if switch in (1, 7, 9):
                 if len(operands) > 1:
-                    self.list.append("** error: can only have one input for {}".format(self.instruction.get(switch)))
+                    self.list.append("** error: can only have one input for {}".format(
+                        self.instruction.get(switch)))
 
                     self.error_count["too many operands"] += 1
 
@@ -207,9 +209,11 @@ class MalChecking:
 
                     self.error_count["too few operands"] += 1
 
+            # MOVEI and MOVE
             elif switch in (11, 12):
                 if len(operands) > 2:
-                    self.list.append("** error: can only have 3 arguments in {}".format(self.instruction.get(switch)))
+                    self.list.append("** error: can only have two arguments in {}".format(
+                        self.instruction.get(switch)))
 
                     self.error_count["too many operands"] += 1
 
@@ -218,9 +222,11 @@ class MalChecking:
 
                     self.error_count["too few operands"] += 1
 
+            # BGT, BLT, BEQ, DIV, MUL, SUB, and ADD
             elif switch in (2, 3, 4, 5, 6, 8, 10):
                 if len(operands) > 3:
-                    self.list.append("** error: can only have 3 arguments in {}".format(self.instruction.get(switch)))
+                    self.list.append("** error: can only have three arguments in {}".format(
+                        self.instruction.get(switch)))
 
                     self.error_count["too many operands"] += 1
 
@@ -228,138 +234,6 @@ class MalChecking:
                     self.list.append("** error: needs three inputs for {}".format(self.instruction.get(switch)))
 
                     self.error_count["too few operands"] += 1
-
-            # if switch == 1:
-            #     if len(operands) > 1:
-            #         self.list.append("** error: can only have one label for BR")
-            #
-            #         self.error_count["too many operands"] += 1
-            #
-            #     elif len(operands) < 1:
-            #         self.list.append("** error: needs one label for BR")
-            #
-            #         self.error_count["too few operands"] += 1
-            #
-            # elif switch == 2:
-            #     if len(operands) > 3:
-            #         self.list.append("** error: can only have 3 arguments in BLT")
-            #
-            #         self.error_count["too many operands"] += 1
-            #
-            #     elif len(operands) < 3:
-            #         self.list.append("** error: needs 3 arguments for BLT two to compare third label")
-            #
-            #         self.error_count["too few operands"] += 1
-            #
-            # elif switch == 3:
-            #     if len(operands) > 3:
-            #         self.list.append("** error: can only have 3 arguments in BLT")
-            #
-            #         self.error_count["too many operands"] += 1
-            #
-            #     elif len(operands) < 3:
-            #         self.list.append("** error: needs 3 arguments for BLT, two to compare, third label")
-            #
-            #         self.error_count["too few operands"] += 1
-            #
-            # elif switch == 4:
-            #     if len(operands) > 3:
-            #         self.list.append("** error: can only have 3 arguments in BEQ")
-            #
-            #         self.error_count["too many operands"] += 1
-            #
-            #     elif len(operands) < 3:
-            #         self.list.append("** error: needs 3 arguments for BEQ, two to compare, third label")
-            #
-            #         self.error_count["too few operands"] += 1
-            #
-            # elif switch == 5:
-            #     if len(operands) > 3:
-            #         self.list.append("** error: can only have two inputs and a destination DIV")
-            #
-            #         self.error_count["too many operands"] += 1
-            #
-            #     elif len(operands) < 3:
-            #         self.list.append("** error: needs two inputs and a destination for DIV")
-            #
-            #         self.error_count["too few operands"] += 1
-            #
-            # elif switch == 6:
-            #     if len(operands) > 3:
-            #         self.list.append("** error: can only have two inputs and a destination MUL")
-            #
-            #         self.error_count["too many operands"] += 1
-            #
-            #     elif len(operands) < 3:
-            #         self.list.append("** error: need two inputs and a destination for MUL")
-            #
-            #         self.error_count["too few operands"] += 1
-            #
-            # elif switch == 7:
-            #     if len(operands) > 1:
-            #         self.list.append("** error: can only have one source location for DEC")
-            #
-            #         self.error_count["too many operands"] += 1
-            #
-            #     elif len(operands) < 1:
-            #         self.list.append("** error: needs one at least one source DEC")
-            #
-            #         self.error_count["too few operands"] += 1
-            #
-            # elif switch == 8:
-            #     if len(operands) > 3:
-            #         self.list.append("** error: can only have two inputs and a destination SUB")
-            #
-            #         self.error_count["too many operands"] += 1
-            #
-            #     elif len(operands) < 3:
-            #         self.list.append("** error: need two inputs and a destination for SUB")
-            #
-            #         self.error_count["too few operands"] += 1
-            #
-            # elif switch == 9:
-            #     if len(operands) > 1:
-            #         self.list.append("** error: can only have one source location for INC")
-            #
-            #         self.error_count["too many operands"] += 1
-            #
-            #     elif len(operands) < 1:
-            #         self.list.append("** error: needs one at least one source INC")
-            #
-            #         self.error_count["too few operands"] += 1
-            #
-            # elif switch == 10:
-            #     if len(operands) > 3:
-            #         self.list.append("** error: can only have two inputs and a destination ADD")
-            #
-            #         self.error_count["too many operands"] += 1
-            #
-            #     elif len(operands) < 3:
-            #         self.list.append("** error: need two inputs and a destination for ADD")
-            #
-            #         self.error_count["too few operands"] += 1
-            #
-            # elif switch == 11:
-            #     if len(operands) > 2:
-            #         self.list.append("** error: must have one immediate and one destination MOVEI")
-            #
-            #         self.error_count["too many operands"] += 1
-            #
-            #     elif len(operands) < 2:
-            #         self.list.append("** error: needs one immediate and one destination MOVIE")
-            #
-            #         self.error_count["too few operands"] += 1
-            #
-            # elif switch == 12:
-            #     if len(operands) > 2:
-            #         self.list.append("** error: must have one source and one destination MOVE")
-            #
-            #         self.error_count["too many operands"] += 1
-            #
-            #     elif len(operands) < 2:
-            #         self.list.append("** error: needs one source and one destination MOVE")
-            #
-            #         self.error_count["too few operands"] += 1
 
         self.wrong_operands(op_code[0], operands)
         return
@@ -393,9 +267,11 @@ class MalChecking:
             except IndexError:
                 self.list.append("** error: no source")
 
+                self.list.append("** error: no destination")
+
                 self.error_count["ill-formed operands"] += 1
 
-        # MoveI
+        # MOVEI
         elif switch == 11:
             try:
                 self.immediate_check(operand[0])
@@ -411,9 +287,11 @@ class MalChecking:
             except IndexError:
                 self.list.append("** error: no source")
 
+                self.list.append("** error: no destination")
+
                 self.error_count["ill-formed operands"] += 1
 
-        # Add or Sub or Mul or Div
+        # ADD or SUB or MUL or DIV
         elif switch in (10, 8, 6, 5):
             try:
                 self.source_check(operand[0])
@@ -433,14 +311,20 @@ class MalChecking:
                 except IndexError:
                     self.list.append("** error: second source missing")
 
+                    self.list.append("** error: missing destination")
+
                     self.error_count["ill-formed operands"] += 1
 
             except IndexError:
                 self.list.append("** error: first source missing")
 
+                self.list.append("** error: second source missing")
+
+                self.list.append("** error: missing destination")
+
                 self.error_count["ill-formed operands"] += 1
 
-        # Inc or Dec
+        # INC or DEC
         elif switch in (9, 7):
             try:
                 self.source_check(operand[0])
@@ -450,7 +334,7 @@ class MalChecking:
 
                 self.error_count["ill-formed operands"] += 1
 
-        # Beq or Blt or Bgt
+        # BEQ or BLT or BGT
         elif switch in (4, 3, 2):
             try:
                 self.source_check(operand[0])
@@ -469,14 +353,20 @@ class MalChecking:
                 except IndexError:
                     self.list.append("** error: missing second source")
 
+                    self.list.append("** error: missing label")
+
                     self.error_count["ill-formed operands"] += 1
 
             except IndexError:
                 self.list.append("** error: missing first source")
 
+                self.list.append("** error: missing second source")
+
+                self.list.append("** error: missing label")
+
                 self.error_count["ill-formed operands"] += 1
 
-        # Br
+        # BR
         elif switch == 1:
             try:
                 self.label_check(operand[0])
@@ -576,14 +466,14 @@ class MalChecking:
         if immediate.isdigit():
             for number in immediate:
                 if int(number) > 7:
-                    self.list.append("** error: number is not in octal")
+                    self.list.append("** error: number is not in octal format")
 
                     self.error_count["wrong operand type"] += 1
                     return
             return
 
         else:
-            self.list.append("** error: immediate value expected")
+            self.list.append("** error: immediate value expected not register or memory location")
 
             self.error_count["wrong operand type"] += 1
             return
@@ -597,7 +487,7 @@ class MalChecking:
         :return: checks that the label and rights an error if found
         """
         if not label.isalpha():
-            self.list.append("** error: label can only contains letters")
+            self.list.append("** error: label memory location can only contains letters")
 
             self.error_count["wrong operand type"] += 1
             return
@@ -617,7 +507,8 @@ class MalChecking:
         for key in self.branch.keys():
             if self.branch.get(key) not in self.label:
 
-                self.errors[key].append("** error: branch is to label that isn't defined")
+                self.errors[key].append("** error: branch {} is to label that isn't defined".format(
+                    self.branch.get(key)))
 
                 self.error_count["label warnings"] += 1
 
