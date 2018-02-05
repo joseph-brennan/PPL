@@ -62,7 +62,7 @@ class MalChecking:
             self.count += 1
 
             # blank line move forward
-            if line == '\n' or line == '':
+            if line in ('\n', ''):
                 continue
 
             # skip the comments
@@ -76,7 +76,9 @@ class MalChecking:
             else:
                 line = line.partition(';')
 
-                self.print_line[self.count] = line[0].strip()
+                no_comment = i.partition(';')
+
+                self.print_line[self.count] = no_comment[0]
 
                 self.error_checking(line[0].strip())
 
@@ -194,137 +196,170 @@ class MalChecking:
                 if self.instruction.get(key) == op_code[0]:
                     switch = key
 
-            if switch == 1:
+            if switch in (1, 7, 9):
                 if len(operands) > 1:
-                    self.list.append("** error: can only have one label for BR")
+                    self.list.append("** error: can only have one input for {}".format(self.instruction.get(switch)))
 
                     self.error_count["too many operands"] += 1
 
                 elif len(operands) < 1:
-                    self.list.append("** error: needs one label for BR")
+                    self.list.append("** error: needs one input for {}".format(self.instruction.get(switch)))
 
                     self.error_count["too few operands"] += 1
 
-            elif switch == 2:
-                if len(operands) > 3:
-                    self.list.append("** error: can only have 3 arguments in BLT")
-
-                    self.error_count["too many operands"] += 1
-
-                elif len(operands) < 3:
-                    self.list.append("** error: needs 3 arguments for BLT two to compare third label")
-
-                    self.error_count["too few operands"] += 1
-
-            elif switch == 3:
-                if len(operands) > 3:
-                    self.list.append("** error: can only have 3 arguments in BLT")
-
-                    self.error_count["too many operands"] += 1
-
-                elif len(operands) < 3:
-                    self.list.append("** error: needs 3 arguments for BLT, two to compare, third label")
-
-                    self.error_count["too few operands"] += 1
-
-            elif switch == 4:
-                if len(operands) > 3:
-                    self.list.append("** error: can only have 3 arguments in BEQ")
-
-                    self.error_count["too many operands"] += 1
-
-                elif len(operands) < 3:
-                    self.list.append("** error: needs 3 arguments for BEQ, two to compare, third label")
-
-                    self.error_count["too few operands"] += 1
-
-            elif switch == 5:
-                if len(operands) > 3:
-                    self.list.append("** error: can only have two inputs and a destination DIV")
-
-                    self.error_count["too many operands"] += 1
-
-                elif len(operands) < 3:
-                    self.list.append("** error: needs two inputs and a destination for DIV")
-
-                    self.error_count["too few operands"] += 1
-
-            elif switch == 6:
-                if len(operands) > 3:
-                    self.list.append("** error: can only have two inputs and a destination MUL")
-
-                    self.error_count["too many operands"] += 1
-
-                elif len(operands) < 3:
-                    self.list.append("** error: need two inputs and a destination for MUL")
-
-                    self.error_count["too few operands"] += 1
-
-            elif switch == 7:
-                if len(operands) > 1:
-                    self.list.append("** error: can only have one source location for DEC")
-
-                    self.error_count["too many operands"] += 1
-
-                elif len(operands) < 1:
-                    self.list.append("** error: needs one at least one source DEC")
-
-                    self.error_count["too few operands"] += 1
-
-            elif switch == 8:
-                if len(operands) > 3:
-                    self.list.append("** error: can only have two inputs and a destination SUB")
-
-                    self.error_count["too many operands"] += 1
-
-                elif len(operands) < 3:
-                    self.list.append("** error: need two inputs and a destination for SUB")
-
-                    self.error_count["too few operands"] += 1
-
-            elif switch == 9:
-                if len(operands) > 1:
-                    self.list.append("** error: can only have one source location for INC")
-
-                    self.error_count["too many operands"] += 1
-
-                elif len(operands) < 1:
-                    self.list.append("** error: needs one at least one source INC")
-
-                    self.error_count["too few operands"] += 1
-
-            elif switch == 10:
-                if len(operands) > 3:
-                    self.list.append("** error: can only have two inputs and a destination ADD")
-
-                    self.error_count["too many operands"] += 1
-
-                elif len(operands) < 3:
-                    self.list.append("** error: need two inputs and a destination for ADD")
-
-                    self.error_count["too few operands"] += 1
-
-            elif switch == 11:
+            elif switch in (11, 12):
                 if len(operands) > 2:
-                    self.list.append("** error: must have one immediate and one destination MOVEI")
+                    self.list.append("** error: can only have 3 arguments in {}".format(self.instruction.get(switch)))
 
                     self.error_count["too many operands"] += 1
 
                 elif len(operands) < 2:
-                    self.list.append("** error: needs one immediate and one destination MOVIE")
+                    self.list.append("** error: needs two inputs for {}".format(self.instruction.get(switch)))
 
                     self.error_count["too few operands"] += 1
 
-            elif switch == 12:
-                if len(operands) > 2:
-                    self.list.append("** error: must have one source and one destination MOVE")
+            elif switch in (2, 3, 4, 5, 6, 8, 10):
+                if len(operands) > 3:
+                    self.list.append("** error: can only have 3 arguments in {}".format(self.instruction.get(switch)))
 
                     self.error_count["too many operands"] += 1
 
-                elif len(operands) < 2:
-                    self.list.append("** error: needs one source and one destination MOVE")
+                elif len(operands) < 3:
+                    self.list.append("** error: needs three inputs for {}".format(self.instruction.get(switch)))
 
                     self.error_count["too few operands"] += 1
+
+            # if switch == 1:
+            #     if len(operands) > 1:
+            #         self.list.append("** error: can only have one label for BR")
+            #
+            #         self.error_count["too many operands"] += 1
+            #
+            #     elif len(operands) < 1:
+            #         self.list.append("** error: needs one label for BR")
+            #
+            #         self.error_count["too few operands"] += 1
+            #
+            # elif switch == 2:
+            #     if len(operands) > 3:
+            #         self.list.append("** error: can only have 3 arguments in BLT")
+            #
+            #         self.error_count["too many operands"] += 1
+            #
+            #     elif len(operands) < 3:
+            #         self.list.append("** error: needs 3 arguments for BLT two to compare third label")
+            #
+            #         self.error_count["too few operands"] += 1
+            #
+            # elif switch == 3:
+            #     if len(operands) > 3:
+            #         self.list.append("** error: can only have 3 arguments in BLT")
+            #
+            #         self.error_count["too many operands"] += 1
+            #
+            #     elif len(operands) < 3:
+            #         self.list.append("** error: needs 3 arguments for BLT, two to compare, third label")
+            #
+            #         self.error_count["too few operands"] += 1
+            #
+            # elif switch == 4:
+            #     if len(operands) > 3:
+            #         self.list.append("** error: can only have 3 arguments in BEQ")
+            #
+            #         self.error_count["too many operands"] += 1
+            #
+            #     elif len(operands) < 3:
+            #         self.list.append("** error: needs 3 arguments for BEQ, two to compare, third label")
+            #
+            #         self.error_count["too few operands"] += 1
+            #
+            # elif switch == 5:
+            #     if len(operands) > 3:
+            #         self.list.append("** error: can only have two inputs and a destination DIV")
+            #
+            #         self.error_count["too many operands"] += 1
+            #
+            #     elif len(operands) < 3:
+            #         self.list.append("** error: needs two inputs and a destination for DIV")
+            #
+            #         self.error_count["too few operands"] += 1
+            #
+            # elif switch == 6:
+            #     if len(operands) > 3:
+            #         self.list.append("** error: can only have two inputs and a destination MUL")
+            #
+            #         self.error_count["too many operands"] += 1
+            #
+            #     elif len(operands) < 3:
+            #         self.list.append("** error: need two inputs and a destination for MUL")
+            #
+            #         self.error_count["too few operands"] += 1
+            #
+            # elif switch == 7:
+            #     if len(operands) > 1:
+            #         self.list.append("** error: can only have one source location for DEC")
+            #
+            #         self.error_count["too many operands"] += 1
+            #
+            #     elif len(operands) < 1:
+            #         self.list.append("** error: needs one at least one source DEC")
+            #
+            #         self.error_count["too few operands"] += 1
+            #
+            # elif switch == 8:
+            #     if len(operands) > 3:
+            #         self.list.append("** error: can only have two inputs and a destination SUB")
+            #
+            #         self.error_count["too many operands"] += 1
+            #
+            #     elif len(operands) < 3:
+            #         self.list.append("** error: need two inputs and a destination for SUB")
+            #
+            #         self.error_count["too few operands"] += 1
+            #
+            # elif switch == 9:
+            #     if len(operands) > 1:
+            #         self.list.append("** error: can only have one source location for INC")
+            #
+            #         self.error_count["too many operands"] += 1
+            #
+            #     elif len(operands) < 1:
+            #         self.list.append("** error: needs one at least one source INC")
+            #
+            #         self.error_count["too few operands"] += 1
+            #
+            # elif switch == 10:
+            #     if len(operands) > 3:
+            #         self.list.append("** error: can only have two inputs and a destination ADD")
+            #
+            #         self.error_count["too many operands"] += 1
+            #
+            #     elif len(operands) < 3:
+            #         self.list.append("** error: need two inputs and a destination for ADD")
+            #
+            #         self.error_count["too few operands"] += 1
+            #
+            # elif switch == 11:
+            #     if len(operands) > 2:
+            #         self.list.append("** error: must have one immediate and one destination MOVEI")
+            #
+            #         self.error_count["too many operands"] += 1
+            #
+            #     elif len(operands) < 2:
+            #         self.list.append("** error: needs one immediate and one destination MOVIE")
+            #
+            #         self.error_count["too few operands"] += 1
+            #
+            # elif switch == 12:
+            #     if len(operands) > 2:
+            #         self.list.append("** error: must have one source and one destination MOVE")
+            #
+            #         self.error_count["too many operands"] += 1
+            #
+            #     elif len(operands) < 2:
+            #         self.list.append("** error: needs one source and one destination MOVE")
+            #
+            #         self.error_count["too few operands"] += 1
 
         self.wrong_operands(op_code[0], operands)
         return
@@ -379,7 +414,7 @@ class MalChecking:
                 self.error_count["ill-formed operands"] += 1
 
         # Add or Sub or Mul or Div
-        elif switch == 10 or switch == 8 or switch == 6 or switch == 5:
+        elif switch in (10, 8, 6, 5):
             try:
                 self.source_check(operand[0])
 
@@ -406,7 +441,7 @@ class MalChecking:
                 self.error_count["ill-formed operands"] += 1
 
         # Inc or Dec
-        elif switch == 9 or switch == 7:
+        elif switch in (9, 7):
             try:
                 self.source_check(operand[0])
 
@@ -416,7 +451,7 @@ class MalChecking:
                 self.error_count["ill-formed operands"] += 1
 
         # Beq or Blt or Bgt
-        elif switch == 4 or switch == 3 or switch == 2:
+        elif switch in (4, 3, 2):
             try:
                 self.source_check(operand[0])
 
@@ -470,9 +505,7 @@ class MalChecking:
                 pass
 
         # BGT or BLT or BEQ
-        elif op_code == self.instruction.get(4) or \
-                op_code == self.instruction.get(3) or \
-                op_code == self.instruction.get(2):
+        elif op_code in (self.instruction.get(4), self.instruction.get(3), self.instruction.get(2)):
 
             try:
                 self.branch[self.count] = operand[2]
@@ -645,13 +678,13 @@ if __name__ == '__main__':
 
         loop = input("would you like to check another file Y/n? ")
 
-        if loop.lower() == "no" or loop.lower() == "n":
+        if loop.lower() in ("no", "n"):
             break
 
         elif loop.strip() == "":
             continue
 
-        elif loop.lower() != "yes" or loop.lower() != "y":
+        elif loop.lower() not in ("yes", "y"):
             print("error not a valid input shutting down")
 
             exit(1)
