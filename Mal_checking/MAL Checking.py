@@ -381,7 +381,7 @@ class MalChecking:
     def warning_label(self, op_code, operand):
         """
         If there is a branch instruction add it to a dictionary keyed by the line number where the instruction is found
-        so at the end of the file it can be compared to the list of labels
+        so at the end of the file it can be compared to the list of labels seen in the file
         :param op_code: what should be a branch instruction
         :param operand: the operands of the instruction
         :return: after saving the branch label for the end of the file
@@ -567,7 +567,7 @@ if __name__ == '__main__':
         mal = MalChecking(name)
         mal.read_file()
 
-        loop = input("would you like to check another file Y/n? ")
+        loop = input("Would you like to check another file Y/n? ")
 
         if loop.lower() in ("no", "n"):
             break
