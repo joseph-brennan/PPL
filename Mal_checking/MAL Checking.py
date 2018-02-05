@@ -13,10 +13,16 @@ class MalChecking:
         """
         # saved file name
         self.file_name = file_name
+        try:
+            # open the Mal and log files
+            self.mal_file = open("{}.mal".format(file_name), 'r')
 
-        # open the Mal and log files
-        self.mal_file = open("{}.mal".format(file_name), 'r')
-        self.log = open("{}.log".format(file_name), 'w')
+            self.log = open("{}.log".format(file_name), 'w')
+
+        except FileNotFoundError or IOError:
+            print("File not found please enter valid MAL file in folder")
+
+            exit(1)
 
         # known instruction codes in MAL
         self.instruction = {1: "BR", 2: "BGT", 3: "BLT", 4: "BEQ", 5: "DIV", 6: "MUL",
@@ -524,6 +530,8 @@ class MalChecking:
             self.file_name, self.file_name, time.ctime()))
 
         self.log.write("-------------------------------------------------------\n")
+
+        self.log.write("MAL Program Listing:MAL Program Listing:\n\n")
 
         true_count = 0
         for line in sorted(self.print_line.keys()):
