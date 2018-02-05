@@ -61,7 +61,7 @@ class MalChecking:
             self.count += 1
 
             # blank line move forward
-            if line in ('\n', ''):
+            if line in ('\n', '\r\n', ''):
                 continue
 
             # skip the comments
@@ -466,7 +466,7 @@ class MalChecking:
         if immediate.isdigit():
             for number in immediate:
                 if int(number) > 7:
-                    self.list.append("** error: number is not in octal format")
+                    self.list.append("** error: number {} is not in octal format".format(number))
 
                     self.error_count["wrong operand type"] += 1
                     return
@@ -487,13 +487,13 @@ class MalChecking:
         :return: checks that the label and rights an error if found
         """
         if not label.isalpha():
-            self.list.append("** error: label memory location can only contains letters")
+            self.list.append("** error: {} memory location can only contains letters".format(label))
 
             self.error_count["wrong operand type"] += 1
             return
 
         elif len(label) > 5:
-            self.list.append("** error: label can at most be 5 char long")
+            self.list.append("** error: label {} can at most be 5 char long".format(label))
 
             self.error_count["wrong operand type"] += 1
             return
