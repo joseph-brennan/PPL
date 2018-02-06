@@ -20,7 +20,7 @@ class MalChecking:
             self.log = open("{}.log".format(file_name), 'w')
 
         except FileNotFoundError or IOError:
-            print("File not found please enter valid MAL file in folder")
+            print("File not found please enter MAL file in this directory")
 
             exit(1)
 
@@ -246,8 +246,8 @@ class MalChecking:
 
     def wrong_operands(self, op_code, operand):
         """
-        using the work performed before to separate the instruction from its operands it checks each type of operand in
-        the instruction is the correct type
+        using the work performed before to separate the instruction from its operands
+        it checks each type of operand in the instruction is the correct type
         :param op_code: the instruction
         :param operand: the operands for the instruction
         :return: this and the last error check have been performed
@@ -386,8 +386,8 @@ class MalChecking:
 
     def warning_label(self, op_code, operand):
         """
-        If there is a branch instruction add it to a dictionary keyed by the line number where the instruction is found
-        so at the end of the file it can be compared to the list of labels seen in the file
+        If there is a branch instruction add it to a dictionary keyed by the line number where the
+        instruction is found so at the end of the file it can be compared to the list of labels seen in the file
         :param op_code: what should be a branch instruction
         :param operand: the operands of the instruction
         :return: after saving the branch label for the end of the file
@@ -487,8 +487,8 @@ class MalChecking:
     # check of label to branch
     def label_check(self, label):
         """
-        check that a branch label is a valid memory location and later the label is checked for if the label is a label
-        in the code
+        check that a branch label is a valid memory location and later the label is checked for if the
+        label is a label in the code
         :param label: a memory location
         :return: checks that the label and rights an error if found
         """
@@ -506,8 +506,8 @@ class MalChecking:
 
     def branch_checker(self):
         """
-        checks the valid labels in the code against the branch instruction labels after the whole file as been read
-        for the final error check
+        checks the valid labels in the code against the branch instruction labels after the whole file
+        as been read for the final error check
         :return: after writing a error if the label branching to doesn't exist
         """
         for key in self.branch.keys():
