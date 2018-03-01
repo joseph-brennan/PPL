@@ -1,8 +1,19 @@
 # writing myself
 
+# ignore files
 *.docx
+
+# pdf isn't needed
 *.pdf
+
+#class book isn't needed
 **/Concepts of Programming Language 10th
+
+# don't need the python build files
 **/.idea/
+
+# log files
 *.log
+
+# IDE ish type thing doesn't work well
 **/portacle/
