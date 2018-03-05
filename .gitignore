@@ -6,9 +6,6 @@
 # pdf isn't needed
 *.pdf
 
-#class book isn't needed
-**/Concepts of Programming Language 10th
-
 # don't need the python build files
 **/.idea/
 
