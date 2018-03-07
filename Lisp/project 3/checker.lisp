@@ -1,4 +1,4 @@
-;;  Joey Brennan – CS 3210 – Fall 2016
+;;;;  Joey Brennan – CS 3210 – Fall 2016
 ;;  ============================
 ;;  11.	Expression syntax checker:  A function which checks the syntax of a
 ;;              (possibly nested) list of expressions with numeric operands
@@ -11,11 +11,14 @@
 ;;       2. all list elements are integers
 ;;       3. list sum will not exceed maxint
 
-  < Lisp code here >
+(defun checker)
 
-;;  test plan for adder:
+;;  test plan for checker:
 ;;  category / description		data		expected result
                  ;;  ----------------------------------------------------------------------------------------------------
-    ;;  empty list				( )	   	       0
-    ;;  list with 1 element		(6)		       6
-    ;;  list sums to zero & duplicates	(-2 1 0 1)	       0
+
+(checker '())               ;; empty lists  0
+
+(checker '(5))              ;; single element 5
+
+(checker '(-2 0 1 1))       ;; results 0

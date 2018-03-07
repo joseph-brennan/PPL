@@ -1,4 +1,4 @@
-;;  Joey Brennan – CS 3210 – Fall 2016
+;;;;  Joey Brennan – CS 3210 – Fall 2016
 ;;  ============================
 ;;  5.	Sort by recency: Takes a word and a list of words.
 ;;                 If the word is not in the list, it is added at the beginning
@@ -10,9 +10,9 @@
 ;;  assumptions:
 ;;       1. The incoming list has no duplicates.
 
-  < Lisp code here >
+(defun make-recent)
 
-;;  test plan for adder:
+;;  test plan for make recent:
 ;;  category / description		data		expected result
                  ;;  ----------------------------------------------------------------------------------------------------
     ;;  empty list				( )	   	       0

@@ -1,4 +1,4 @@
-;;  Joey Brennan – CS 3210 – Fall 2016
+;;;;  Joey Brennan – CS 3210 – Fall 2016
 ;;  ============================
 ;;  7.	Almost sorted: A function that receives a list of numbers and returns
 ;;              true or nil for whether the list is almost sorted in ascending
@@ -17,7 +17,7 @@
 ;;  assumptions:
 ;;       1. The list contains no duplicates.
 
-  < Lisp code here >
+(defun count-sorter)
 
 ;;  test plan for adder:
 ;;  category / description		data		expected result

@@ -1,4 +1,4 @@
-;;  Joey Brennan – CS 3210 – Fall 2016
+;;;;  Joey Brennan – CS 3210 – Fall 2016
 ;;  ============================
 ;;  2.	Divide by 5 counter: A function that receives a list of numbers,
 ;;                          and returns a count of how many are divisible by 5.
@@ -11,9 +11,9 @@
 ;;       2. all list elements are integers
 ;;       3. list sum will not exceed maxint
 
-  < Lisp code here >
+(defun devide)
 
-;;  test plan for adder:
+;;  test plan for devide:
 ;;  category / description		data		expected result
                  ;;  ----------------------------------------------------------------------------------------------------
     ;;  empty list				( )	   	       0

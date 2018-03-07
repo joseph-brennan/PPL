@@ -1,4 +1,4 @@
-;;  Joey Brennan – CS 3210 – Fall 2016
+;;;;  Joey Brennan – CS 3210 – Fall 2016
 ;;  ============================
 ;;  4. Count groups:  Given a list, count the number of groups
 ;;                   (a group is two or more identical adjacent items).
@@ -7,7 +7,7 @@
 ;;  assumptions:
 ;;       1. the list contains no nested lists
 
-  < Lisp code here >
+(defun count-clumps)
 
 ;;  test plan for count groups:
 ;;  category / description		data		expected result

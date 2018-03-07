@@ -1,4 +1,4 @@
-;;  Joey Brennan – CS 3210 – Fall 2016
+;;;;  Joey Brennan – CS 3210 – Fall 2016
 ;;  ============================
 ;; 3.	Remove negatives: A function that receives a list of integers
 ;;                      and returns a list with all negative values removed.
@@ -9,9 +9,9 @@
 ;;       2. all list elements are integers
 ;;       3. list sum will not exceed maxint
 
-  < Lisp code here >
+(defun remove-negative)
 
-;;  test plan for adder:
+;;  test plan for remove negative:
 ;;  category / description		data		expected result
                  ;;  ----------------------------------------------------------------------------------------------------
     ;;  empty list				( )	   	       0

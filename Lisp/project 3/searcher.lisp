@@ -1,4 +1,4 @@
-;;  Joey Brennan – CS 3210 – Fall 2016
+;;;;  Joey Brennan – CS 3210 – Fall 2016
 ;;  ============================
 ;;  1.	Search.  A function that receives an integer and a list.
 ;;               The list will have a mix of integers, characters, and words,
@@ -6,15 +6,14 @@
 ;;               The function returns a count of how many times the
 ;;               integer value is found.
 ;;  parameters:
-;;       lst – a list of numbers
+;;       lst – a list of numbers, characters, and words
+;;       num - an integer
 ;;  assumptions:
-;;       1. no nested lists
-;;       2. all list elements are integers
-;;       3. list sum will not exceed maxint
 
-  < Lisp code here >
+(defun searcher (num, lst))
 
-;;  test plan for adder:
+
+;;  test plan for searcher:
 ;;  category / description		data		expected result
                  ;;  ----------------------------------------------------------------------------------------------------
     ;;  empty list				( )	   	       0

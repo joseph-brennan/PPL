@@ -1,4 +1,4 @@
-;;  Joey Brennan – CS 3210 – Fall 2016
+;;;;  Joey Brennan – CS 3210 – Fall 2016
 ;;  ============================
 ;;  9.	Untwin:  Receives a list which may have paired (equal) elements,
 ;;               and removes one of each pair.
@@ -9,9 +9,9 @@
 ;;       1. The list is not nested,
 ;;          no more than two identical elements will be adjacent.
 
-  < Lisp code here >
+(defun Untwin)
 
-;;  test plan for adder:
+;;  test plan for untwin:
 ;;  category / description		data		expected result
                  ;;  ----------------------------------------------------------------------------------------------------
     ;;  empty list				( )	   	       0
