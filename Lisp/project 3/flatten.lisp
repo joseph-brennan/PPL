@@ -5,17 +5,20 @@
 ;;               at the top level.
 ;;             Note that flattening an embedded NIL removes it.
 ;;  parameters:
-;;       lst – a list of numbers
+;;       lst – list of arbitrary depth
 ;;  assumptions:
-;;       1. no nested lists
-;;       2. all list elements are integers
-;;       3. list sum will not exceed maxint
 
-(defun flatten)
+(defun flatten (lst)
+  (cond (???                  t)
+        ((atom (car lst))           (cons (car lst) (flatten (cdr lst))))
+        ((list (car lst))           (append (car lst) (flatten (cdr lst))))
+  )
+)
 
 ;;  test plan for flatten:
 ;;  category / description		data		expected result
                  ;;  ----------------------------------------------------------------------------------------------------
-    ;;  empty list				( )	   	       0
-    ;;  list with 1 element		(6)		       6
-    ;;  list sums to zero & duplicates	(-2 1 0 1)	       0
+
+(flatten ())
+(flatten '(day night))
+(flatten '(a b (high low) () (e (f (deep) h))))

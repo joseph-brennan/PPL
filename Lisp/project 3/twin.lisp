@@ -6,11 +6,17 @@
 ;;  assumptions:
 ;;       1.  The list is not nested.
 
-(defun Twin)
+(defun Twin (lst)
+  (cond ((null lst)            t)
+        ((cons (car lst) lst) (twin (cdr lst)))
+  )
+)
 
 ;;  test plan for twin:
 ;;  category / description		data		expected result
                  ;;  ----------------------------------------------------------------------------------------------------
-    ;;  empty list				( )	   	       0
-    ;;  list with 1 element		(6)		       6
-    ;;  list sums to zero & duplicates	(-2 1 0 1)	       0
+(twin '(dog 2 cat))
+
+(twin '(3 3 4))
+
+(twin '(one two three))
