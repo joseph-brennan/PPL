@@ -11,11 +11,11 @@
 ;;  assumptions:
 ;;       1. The limit will be a number.
 
-(defun enfuorce-limit)
+(defun enfuorce-limit (num lst))
 
 ;;  test plan for emfuorce limit:
 ;;  category / description		data		expected result
                  ;;  ----------------------------------------------------------------------------------------------------
-    ;;  empty list				( )	   	       0
-    ;;  list with 1 element		(6)		       6
-    ;;  list sums to zero & duplicates	(-2 1 0 1)	       0
+(enfuource-limit (5 '(1 23 2 4 5)))
+(enfuorce-limit (1 '(1 2 3 4 5)))
+(enfuorce-limit (3 '(cat dog 3 5 8)))

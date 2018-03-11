@@ -10,7 +10,10 @@
 ;;  assumptions:
 ;;       1. The incoming list has no duplicates.
 
-(defun make-recent)
+(defun make-recent (lst)
+  (cond
+  )
+)
 
 ;;  test plan for make recent:
 ;;  category / description		data		expected result

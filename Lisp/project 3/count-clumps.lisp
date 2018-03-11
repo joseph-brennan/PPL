@@ -7,11 +7,11 @@
 ;;  assumptions:
 ;;       1. the list contains no nested lists
 
-(defun count-clumps)
+(defun count-clumps (lst))
 
 ;;  test plan for count groups:
 ;;  category / description		data		expected result
                  ;;  ----------------------------------------------------------------------------------------------------
-    ;;  empty list				( )	   	       0
-    ;;  list with 1 element		(6)		       6
-    ;;  list sums to zero & duplicates	(-2 1 0 1)	       0
+(count-clumps '(1 2 3))
+(count-clumps '(12 12 1 25))
+(count-clumps '(echo echo is this on))

@@ -11,11 +11,22 @@
 ;;       2. all list elements are integers
 ;;       3. list sum will not exceed maxint
 
-(defun devide)
+(defun devide-by-5 (lst)
+ (result 0)
+  (cond ((null lst)                result)
+        ((= (mod (car lst) 5) 0)  ((result 1) (devide-by-5 (cdr lst))))
+        (t                        ((devide-by-5 (cdr lst))))
+  )
+)
+
+(defun result (numb)
+  (cond ((null lst)      lst)
+        ((numberp (car numb))   (+ (car numb) (car lst)))
+  )
+)
 
 ;;  test plan for devide:
 ;;  category / description		data		expected result
                  ;;  ----------------------------------------------------------------------------------------------------
-    ;;  empty list				( )	   	       0
-    ;;  list with 1 element		(6)		       6
-    ;;  list sums to zero & duplicates	(-2 1 0 1)	       0
+(devid-by-5 '(4 10 15 16))
+(devide-by-5 '(1 2 3 4))

@@ -11,7 +11,10 @@
 ;;       2. all list elements are integers
 ;;       3. list sum will not exceed maxint
 
-(defun checker)
+(defun checker (lst)
+  (cond
+  )
+)
 
 ;;  test plan for checker:
 ;;  category / description		data		expected result
