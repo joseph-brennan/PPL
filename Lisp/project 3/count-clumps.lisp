@@ -8,12 +8,16 @@
 ;;       1. the list contains no nested lists
 
 (defun count-clumps (lst)
-  (cond ((null lst)        0)
-        (atom (car lst)         (+ 1 (count-clumps (cdr lst))))
-        ((numberp (car lst))    (+ 1 (count-clumps (cdr lst))))
-        (t                      (count-clumps (cdr lst)))
+  (cond ((null lst)                                                 0)
+        ((and (atom (car lst)) (equal (car lst) (car (cdr lst))))  (+ 1 (count-clumps (cdr lst))))
+        ((and (numberp (car lst)) (= (car lst) (car (cdr lst))))   (+ 1 (count-clumps (cdr lst))))
+        (t                                                         (count-clumps (cdr lst)))
   )
 )
+
+(defun matcha (at lst))
+
+(defun matchn (num lst))
 
 ;;  test plan for count groups:
 ;;  category / description		data		expected result

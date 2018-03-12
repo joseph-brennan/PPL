@@ -5,21 +5,17 @@
 ;;  parameters:
 ;;       lst – a list of numbers
 ;;  assumptions:
+;;         1. no nested lists
 
 
 (defun remove-negatives (lst)
-  (cond ((null lst)         nil)
-        ((<= 0 (car lst))  (remove-negatives (cdr lst)))
-        ((> 0 (car lst))   (negative-gone (lst)))
+  (cond ((null lst)          nil)
+        ((<= 0 (car lst))   (cons (car lst) (remove-negatives (cdr lst))))
+        (t                  (remove-negatives (cdr lst)))
   )
 )
-
-(defun negative-remove (lst)
-  (remove-negatives (cdr lst))
-)
-
 ;;  test plan for remove negative:
 ;;  category / description		data		expected result
                  ;;  ----------------------------------------------------------------------------------------------------
-(my-remove-negatives '(1 2 3 4))
-(my-remove-negatives '(1 -1 2 -3 -4 7))
+;; nothing to remove             (remove-negatives '(1 2 3 4))        (1 2 3 4)
+;; removes half the list         (remove-negatives '(1 -1 2 -3 -4 7)) ()

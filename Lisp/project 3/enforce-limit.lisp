@@ -13,9 +13,10 @@
 ;;       1. The limit will be a number.
 
 (defun enforce-limit (num lst)
-  (cond ((null lst)                                     nil)
-        ((and (numberp (car lst)) (< num (car lst)))   (cons num (enforce-limit num (cdr lst))))
-        (t                                             (enforce-limit num (cdr lst)))
+  (cond ((null lst) nil)
+        ((listp (car lst))                            (+ (enforce-limit num (car lst)) (enforce-limit num (cdr lst))))
+        ((and (numberp (car lst)) (< num (car lst)))  (cons num (enforce-limit num (cdr lst))))
+        (t                                            (cons (car lst)  (enforce-limit num (cdr lst))))
   )
 )
 
