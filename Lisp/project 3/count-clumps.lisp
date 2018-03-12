@@ -7,7 +7,13 @@
 ;;  assumptions:
 ;;       1. the list contains no nested lists
 
-(defun count-clumps (lst))
+(defun count-clumps (lst)
+  (cond ((null lst)        0)
+        (atom (car lst)         (+ 1 (count-clumps (cdr lst))))
+        ((numberp (car lst))    (+ 1 (count-clumps (cdr lst))))
+        (t                      (count-clumps (cdr lst)))
+  )
+)
 
 ;;  test plan for count groups:
 ;;  category / description		data		expected result

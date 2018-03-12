@@ -11,9 +11,13 @@
 ;;  assumptions:
 
 (defun searcher (num lst)
-  (cond ((null lst)               0)
-        ((equal num (car lst))   (+ 1 (searcher num (cdr lst))))
-        (t                       (searcher num (cdr lst)))
+  (cond ((null lst)                                     0)
+
+        ((listp (car lst))                             (+ (searcher num (car lst)) (searcher num (cdr lst))))
+
+        ((and (numberp (car lst)) (= num (car lst)))   (+ 1 (searcher num (cdr lst))))
+
+        (t                                             (searcher num (cdr lst)))
   )
 )
 
@@ -21,5 +25,5 @@
 ;;  test plan for searcher:
 ;;  category / description		data		expected result
                  ;;  ----------------------------------------------------------------------------------------------------
-(searcher (4 '(1 2 3 4 5)))
-(searcher (8 '(1 2 '(dog cat bat) 5)))
+(searcher 4 '(1 2 3 4 5))
+(searcher 8 '(1 2 '(dog cat bat) 5))

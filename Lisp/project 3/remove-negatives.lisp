@@ -7,19 +7,19 @@
 ;;  assumptions:
 
 
-(defun remove-negative (lst)
-  (cond ((null lst)           nil)
-        ((< (car lst) 0)     (deleter (lst)))
-        ((>= (car lst) 0)    (remove-negative (cdr lst)))
+(defun remove-negatives (lst)
+  (cond ((null lst)         nil)
+        ((<= 0 (car lst))  (remove-negatives (cdr lst)))
+        ((> 0 (car lst))   (negative-gone (lst)))
   )
 )
 
-(defun deleter (lst)
-  (remove-negative (cdr lst))
+(defun negative-remove (lst)
+  (remove-negatives (cdr lst))
 )
 
 ;;  test plan for remove negative:
 ;;  category / description		data		expected result
                  ;;  ----------------------------------------------------------------------------------------------------
-(remove-negative '(1 2 3 4))
-(remove-negative '(1 -1 2 -3 -4 7))
+(my-remove-negatives '(1 2 3 4))
+(my-remove-negatives '(1 -1 2 -3 -4 7))

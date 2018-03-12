@@ -12,8 +12,15 @@
 ;;       3. list sum will not exceed maxint
 
 (defun devide-by-5 (lst)
-  (cond ((null lst)          nil)
+  (cond ((null lst)            0)
         ((moder (car lst))    (+ 1 (devide-by-5 (cdr lst))))
+        (t                    (devide-by-5 (cdr lst)))
+  )
+)
+
+(defun moder (lst)
+  (cond ((= (mod lst 5) 0)     t)
+        (t                    nil)
   )
 )
 
@@ -21,5 +28,5 @@
 ;;  test plan for devide:
 ;;  category / description		data		expected result
                  ;;  ----------------------------------------------------------------------------------------------------
-(devid-by-5 '(4 10 15 16))
+(devide-by-5 '(4 10 15 16))
 (devide-by-5 '(1 2 3 4))

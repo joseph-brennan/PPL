@@ -13,14 +13,15 @@
 ;;       1. The limit will be a number.
 
 (defun enforce-limit (num lst)
-  (cond ((null lst)           nil)
-        (< num (car lst)     (cons num (enforce-limit (cdr lst))))
+  (cond ((null lst)                                     nil)
+        ((and (numberp (car lst)) (< num (car lst)))   (cons num (enforce-limit num (cdr lst))))
+        (t                                             (enforce-limit num (cdr lst)))
   )
 )
 
 ;;  test plan for enforce-limit:
 ;;  category / description		data		expected result
                  ;;  ----------------------------------------------------------------------------------------------------
-(enforce-limit (5 '(1 23 2 4 5)))
-(enforce-limit (1 '(1 2 3 4 5)))
-(enforce-limit (3 '(cat dog 3 5 8)))
+(enforce-limit 5 '(1 23 2 4 5))
+(enforce-limit 1 '(1 2 3 4 5))
+(enforce-limit 3 '(cat dog 3 5 8))
