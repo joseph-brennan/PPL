@@ -8,9 +8,9 @@
 
 
 (defun remove-negative (lst)
-  (cond ((null lst)           t)
+  (cond ((null lst)           nil)
         ((< (car lst) 0)     (deleter (lst)))
-        ((>= (car lst) 0)    (remove-negitve (cdr lst)))
+        ((>= (car lst) 0)    (remove-negative (cdr lst)))
   )
 )
 

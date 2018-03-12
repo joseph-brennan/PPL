@@ -10,8 +10,8 @@
 ;;       2.  no more than two identical elements will be adjacent.
 
 (defun Untwin (lst)
-  (cond ((null lst)  t)
-        (t          (cons (car lst) (cons (car lst) (untwin (cdr (cdr lst))))))
+  (cond ((null lst)  nil)
+        (t          (cons (car lst) (untwin (cdr (cdr lst)))))
   )
 )
 

@@ -17,7 +17,11 @@
 ;;  assumptions:
 ;;       1. The list contains no duplicates.
 
-(defun count-sorter)
+(defun count-sorter (lst)
+  (cond ()
+
+  )
+)
 
 ;;  test plan for adder:
 ;;  category / description		data		expected result

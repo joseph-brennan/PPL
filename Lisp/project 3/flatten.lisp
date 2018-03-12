@@ -9,10 +9,10 @@
 ;;  assumptions:
 
 (defun flatten (lst)
-  (cond (???                  t)
-        ((atom (car lst))           (cons (car lst) (flatten (cdr lst))))
-        ((list (car lst))           (append (car lst) (flatten (cdr lst))))
-  )
+    (cond ((null lst)    nil)
+          ((atom lst)   (list lst))
+          (t            (append (flatten (car lst))(flatten (cdr lst))))
+    )
 )
 
 ;;  test plan for flatten:

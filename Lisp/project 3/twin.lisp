@@ -7,7 +7,7 @@
 ;;       1.  The list is not nested.
 
 (defun Twin (lst)
-  (cond ((null lst)   t)
+  (cond ((null lst)   nil)
         (t           (cons (car lst) (cons (car lst) (twin (cdr lst)))))
   )
 )

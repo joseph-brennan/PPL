@@ -11,9 +11,9 @@
 ;;  assumptions:
 
 (defun searcher (num lst)
-  (cond ((null lst)    result)
-        ((= num (car lst))    (+ result 1)(searcher (cdr lst)))
-        ((list (car lst))     (cdr (car lst)))
+  (cond ((null lst)               0)
+        ((equal num (car lst))   (+ 1 (searcher num (cdr lst))))
+        (t                       (searcher num (cdr lst)))
   )
 )
 
