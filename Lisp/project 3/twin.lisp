@@ -8,6 +8,7 @@
 
 (defun Twin (lst)
   (cond ((null lst)   nil)
+
         (t           (cons (car lst) (cons (car lst) (twin (cdr lst)))))
   )
 )
@@ -15,8 +16,6 @@
 ;;  test plan for twin:
 ;;  category / description		data		expected result
                  ;;  ----------------------------------------------------------------------------------------------------
-(twin '(dog 2 cat))
-
-(twin '(3 3 4))
-
-(twin '(one two three))
+;;double both atom and number  (twin '(dog 2 cat))  (dog dog 2 2 cat cat)
+;;only numbers                  (twin '(3 3 4))         (3 3 3 3 4 4)
+;;only atoms              (twin '(one two three)) (one one two two three three)

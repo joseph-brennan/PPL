@@ -15,7 +15,9 @@
 (defun enforce-limit (num lst)
   (cond ((null lst) nil)
         ((listp (car lst))                            (+ (enforce-limit num (car lst)) (enforce-limit num (cdr lst))))
+
         ((and (numberp (car lst)) (< num (car lst)))  (cons num (enforce-limit num (cdr lst))))
+
         (t                                            (cons (car lst)  (enforce-limit num (cdr lst))))
   )
 )
@@ -23,6 +25,6 @@
 ;;  test plan for enforce-limit:
 ;;  category / description		data		expected result
                  ;;  ----------------------------------------------------------------------------------------------------
-(enforce-limit 5 '(1 23 2 4 5))
-(enforce-limit 1 '(1 2 3 4 5))
-(enforce-limit 3 '(cat dog 3 5 8))
+;;only one change (enforce-limit 5 '(1 23 2 4 5))    (1 5 2 4 5)
+;;no chnages      (enforce-limit 1 '(1 2 3 4 5))     (1 2 3 4 5)
+;;contains words  (enforce-limit 3 '(cat dog 3 5 8))  (cat dog 3 5 5)

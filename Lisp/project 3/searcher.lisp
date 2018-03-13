@@ -25,5 +25,6 @@
 ;;  test plan for searcher:
 ;;  category / description		data		expected result
                  ;;  ----------------------------------------------------------------------------------------------------
-(searcher 4 '(1 2 3 4 5))
-(searcher 8 '(1 2 '(dog cat bat) 5))
+;;checking only numbers    (searcher 4 '(1 2 3 4 5))          1
+;;checking neseted list  (searcher 8 '(1 2 '(dog cat bat) 5)) 0
+;;

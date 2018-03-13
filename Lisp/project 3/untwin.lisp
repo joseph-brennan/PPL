@@ -11,6 +11,7 @@
 
 (defun Untwin (lst)
   (cond ((null lst)  nil)
+
         (t          (cons (car lst) (untwin (cdr (cdr lst)))))
   )
 )
@@ -18,6 +19,6 @@
 ;;  test plan for untwin:
 ;;  category / description		data		expected result
                  ;;  ----------------------------------------------------------------------------------------------------
-(untwin '(a a b b c c))
+;; checking letters      (untwin '(a a b b c c))   (a b c)
 
-(untwin '(1 1 2 3 3))
+;;checking numbers       (untwin '(1 1 2 3 3))     (1 2 3)

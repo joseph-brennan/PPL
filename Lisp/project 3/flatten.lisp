@@ -10,7 +10,9 @@
 
 (defun flatten (lst)
     (cond ((null lst)    nil)
+
           ((atom lst)   (list lst))
+
           (t            (append (flatten (car lst))(flatten (cdr lst))))
     )
 )
@@ -19,6 +21,6 @@
 ;;  category / description		data		expected result
                  ;;  ----------------------------------------------------------------------------------------------------
 
-(flatten ())
-(flatten '(day night))
-(flatten '(a b (high low) () (e (f (deep) h))))
+;; empty list              (flatten ())                             nil
+;; nothing to flatten  (flatten '(day night))                   (day night)
+;;so many (flatten '(a b (high low) () (e (f (deep) h))))   (a b high low e f deep h)
