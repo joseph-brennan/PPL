@@ -11,7 +11,8 @@
   (cond ((null lst)          nil)
         ;; if its a list
         ((listp (car lst))
-         (cons (remove-negatives (car lst)) (remove-negatives (cdr lst))))
+         (cons (remove-negatives (car lst))
+               (remove-negatives (cdr lst))))
 
         ;; if a possive number keep it in the list
         ((<= 0 (car lst))   (cons (car lst) (remove-negatives (cdr lst))))

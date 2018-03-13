@@ -20,10 +20,10 @@
 (defun is-almost-sorted (lst)
   (cond ((null lst)                                         nil)
         ;; list is perfectly sorted
-        ((= (* 0.2 (count-inversions lst)) 0)               nil)
+        ((= (count-inversions lst) 0)                       nil)
 
         ;; compare length to number of inversions
-        ((>= (length lst) (* 0.2 (count-inversions lst)))   t)
+        ((< (count-inversions lst) (* 0.2 (length lst)))   t)
 
         ;; falls outside being almost sorted
         (t                                                  nil)
@@ -32,10 +32,6 @@
 
 (defun count-inversions (lst)
   (cond ((null lst)                      0)
-        ;; adding support to check lists in the list
-        ((listp (car lst))
-         (cons (count-inversions (car lst)) (count-inversions (cdr lst))))
-
         ;; else if it contains only one element
         ((not (car (cdr lst)))           0)
 
@@ -61,7 +57,7 @@
 
 ;;                   (count-inversions '(1 2 3 5 4 6))   1
 
-;; off by two        (is-almost-sorted '(2 1 3 5 4 8))   t
+;; off by two        (is-almost-sorted '(2 1 3 5 4 8))   nil
 ;;                   (count-inversions  '(2 1 3 5 4 8))  2
 
 ;; Examples, inversions:
