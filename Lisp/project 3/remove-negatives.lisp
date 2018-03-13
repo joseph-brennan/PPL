@@ -15,7 +15,7 @@
 
         ;; if a possive number keep it in the list
         ((<= 0 (car lst))   (cons (car lst) (remove-negatives (cdr lst))))
-   
+
         ;; its a negitive number so skip it
         (t                  (remove-negatives (cdr lst)))
   )
@@ -24,7 +24,7 @@
 ;;  category / description		data		expected result
                  ;;  ----------------------------------------------------------------------------------------------------
 ;; nothing to remove        (remove-negatives '(1 2 3 4))        (1 2 3 4)
-;; removes half the list    (remove-negatives '(1 -1 2 -3 -4 7))    ()
+;; removes half the list    (remove-negatives '(1 -1 2 -3 -4 7))    (1 7)
 ;; removes everything       (remove-negatives '(-1 -3 -2 -5))       ()
 ;; empty list               (remove-negatives '())                  ()
-;; nested                   (remove-negatives '(-1 2 (4 5 6)))
+;; nested                   (remove-negatives '(-1 2 (4 5 6)))      (2 (4 5 6))

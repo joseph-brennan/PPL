@@ -33,7 +33,7 @@
 ;;only one change (enforce-limit 5 '(1 23 2 4 5))    (1 5 2 4 5)
 ;;no chnages      (enforce-limit 1 '(1 2 3 4 5))     (1 2 3 4 5)
 ;;contains words  (enforce-limit 3 '(cat dog 3 5 8))  (cat dog 3 5 5)
-;; nested         (enforce-limit 4 '(1 24  5 6 () (5 6 7)))
+;; nested      (enforce-limit 4 '(1 24  5 6 () (5 6 7)))  (1 4 4 4 () (4 4 4))
 
 ; Examples:
 ; (enforce-limit 5 '(6 2 kitty 5 -16))  ==>  (5 2 kitty 5 -16)

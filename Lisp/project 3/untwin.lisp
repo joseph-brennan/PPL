@@ -11,13 +11,18 @@
 
 (defun Untwin (lst)
   (cond ((null lst)  nil)
+        ;; last one in the list is single
+        ((not (car (cdr lst))) (cons (car lst) (untwin (cdr lst))))
+
         ;; if there is a twin
-        ((equal (car lst) (car (cdr lst)))
+        ((or (equal (car lst) (car (cdr lst)))
+             (= (car lst) (car (cdr lst))))
          ;; add it to the new list and skip its twin
          (cons (car lst) (untwin (cdr (cdr lst)))))
+
         ;; else it doesnt have a twin so move on
         (t
-         (untwin (cdr lst)))
+         (cons (car lst) (untwin (cdr lst))))
   )
 )
 
@@ -26,4 +31,11 @@
                  ;;  ----------------------------------------------------------------------------------------------------
 ;; checking letters      (untwin '(a a b b c c))   (a b c)
 
+;; tricky singles        (untwin '(a b b c c))     (a b c)
+;;                       (untwin '(a a b c c))     (a b c)
+;;                       (untwin '(a a b b c))     (a b c)
+
 ;;checking numbers       (untwin '(1 1 2 3 3))     (1 2 3)
+;;                       (untwin '(1 2 2 3))       (1 2 3)
+;;                       (untwin '(1 2 3))         (1 2 3)
+;;                       (untwin '(1 1 2 2 3))     (1 2 3)

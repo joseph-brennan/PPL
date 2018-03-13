@@ -38,3 +38,4 @@
 ;; empty list           (make-recent 'cat '())              ()
 ;; found at front (make-recent 'dog '(dog cat bird))   (dog cat bird)
 ;; middle of lst  (make-recent 'cat '(dog cat bird))   (cat dog bird)
+;; doesnt exist   (make-recent 'bird '(cat kitten dog puppy))
