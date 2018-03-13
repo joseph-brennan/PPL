@@ -13,14 +13,21 @@
 
 (defun make-recent (word lst)
   (cond ((null lst)               nil)
+        ;; if what you want is the already the first
+        ;; add it to the front then hand off the rest of the list
         ((equal word (car lst))  (cons word (rest-lst word (cdr lst))))
+        ;; its not the first element so make it first
+        ;; hand off the whole list
         (t                       (cons word (rest-lst word lst)))
   )
 )
 
+;; takes after knowning word is the front of the list
 (defun rest-lst (word lst)
   (cond ((null lst)    nil)
-        ((equal word (car lst))   (rest-lst word (cdr lst)))
+        ;; remove the old occurnece of the word
+        ((equal word (car lst))  (rest-lst word (cdr lst)))
+        ;; add every other element to the list in orginal order
         (t                       (cons (car lst) (rest-lst word (cdr lst))))
   )
 )

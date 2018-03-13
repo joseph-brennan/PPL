@@ -10,10 +10,11 @@
 
 (defun flatten (lst)
     (cond ((null lst)    nil)
-
+          ;; if current is an atom make it a list
           ((atom lst)   (list lst))
-
-          (t            (append (flatten (car lst))(flatten (cdr lst))))
+          ;; I know they are are lists so append recursevely
+          ;; the flatten element to the rest of the flattened list
+          (t            (append (flatten (car lst)) (flatten (cdr lst))))
     )
 )
 

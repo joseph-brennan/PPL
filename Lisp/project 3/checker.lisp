@@ -20,8 +20,10 @@
 ;;  category / description		data		expected result
                  ;;  ----------------------------------------------------------------------------------------------------
 
-(checker '())               ;; empty lists  0
-
-(checker '(5))              ;; single element 5
-
-(checker '(-2 0 1 1))       ;; results 0
+;; Examples of top-level function:
+; (checker  '(7 plus 11))  ==>  T			(true, valid)
+; (checker  '(25 minus (17 times 12)))  ==>  T		(true, valid)
+; (checker  '(-4 plus))  ==>  nil				(wrong number of operands)
+; (checker  '(-4 plus (cat minus dog)))  ==>  nil	(operands not numeric)
+; (checker  '((7 + 3) minus 12))  ==>  nil	    	(invalid operator “+”)
+; (checker  '(-4 plus (cat minus dog)))  ==>  nil   	(operands not numeric)

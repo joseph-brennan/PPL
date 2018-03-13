@@ -8,7 +8,7 @@
 
 (defun Twin (lst)
   (cond ((null lst)   nil)
-
+        ;; adds two of the current element to the list
         (t           (cons (car lst) (cons (car lst) (twin (cdr lst)))))
   )
 )

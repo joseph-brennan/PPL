@@ -11,19 +11,21 @@
 ;;  assumptions:
 
 (defun searcher (num lst)
-  (cond ((null lst)
-         0)
-
+  (cond ((null lst)        0)
+        ;; if the current is a list
         ((listp (car lst))
+         ;; inner recussion that adds each of inner to rest of outer
+         (+ (searcher num (car lst))
+            (searcher num (cdr lst))))
 
-         (+ (searcher num (car lst)) (searcher num (cdr lst))))
-
-        ((and (numberp (car lst)) (= num (car lst)))
-
+        ;; if current is a number and is what we are searching for
+        ((and (numberp (car lst))
+              (= num (car lst)))
+         ;; add to the count and check rest of list
          (+ 1 (searcher num (cdr lst))))
 
+        ;; else check the rest of the list
         (t
-
          (searcher num (cdr lst)))
   )
 )

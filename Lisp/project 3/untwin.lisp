@@ -11,8 +11,13 @@
 
 (defun Untwin (lst)
   (cond ((null lst)  nil)
-
-        (t          (cons (car lst) (untwin (cdr (cdr lst)))))
+        ;; if there is a twin
+        ((equal (car lst) (car (cdr lst)))
+         ;; add it to the new list and skip its twin
+         (cons (car lst) (untwin (cdr (cdr lst)))))
+        ;; else it doesnt have a twin so move on
+        (t
+         (untwin (cdr lst)))
   )
 )
 
