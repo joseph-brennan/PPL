@@ -14,11 +14,16 @@
 
 (defun enforce-limit (num lst)
   (cond ((null lst) nil)
-        ((listp (car lst))                            (+ (enforce-limit num (car lst)) (enforce-limit num (cdr lst))))
+        ((listp (car lst))
 
-        ((and (numberp (car lst)) (< num (car lst)))  (cons num (enforce-limit num (cdr lst))))
+         (+ (enforce-limit num (car lst)) (enforce-limit num (cdr lst))))
 
-        (t                                            (cons (car lst)  (enforce-limit num (cdr lst))))
+        ((and (numberp (car lst)) (< num (car lst)))
+
+         (cons num (enforce-limit num (cdr lst))))
+
+        (t
+         (cons (car lst)  (enforce-limit num (cdr lst))))
   )
 )
 

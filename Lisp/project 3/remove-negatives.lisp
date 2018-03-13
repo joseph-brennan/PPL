@@ -19,7 +19,7 @@
 ;;  test plan for remove negative:
 ;;  category / description		data		expected result
                  ;;  ----------------------------------------------------------------------------------------------------
-;; nothing to remove             (remove-negatives '(1 2 3 4))        (1 2 3 4)
-;; removes half the list         (remove-negatives '(1 -1 2 -3 -4 7))    ()
-;; removes everything            (remove-negatives '(-1 -3 -2 -5))       ()
-;;empty list                     (remove-negatives '())                  ()
+;; nothing to remove        (remove-negatives '(1 2 3 4))        (1 2 3 4)
+;; removes half the list    (remove-negatives '(1 -1 2 -3 -4 7))    ()
+;; removes everything       (remove-negatives '(-1 -3 -2 -5))       ()
+;;empty list                (remove-negatives '())                  ()

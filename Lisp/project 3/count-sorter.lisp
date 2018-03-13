@@ -17,15 +17,25 @@
 ;;  assumptions:
 ;;       1. The list contains no duplicates.
 
-(defun count-sorter (lst)
-  (cond ()
+(defun is-almost-sorted (lst)
+  (cond ((null lst)        nil)
+        (())
 
+  )
+)
+
+(defun count-inversions (lst)
+  (cond ((null lst)       0)
+        (())
   )
 )
 
 ;;  test plan for adder:
 ;;  category / description		data		expected result
                  ;;  ----------------------------------------------------------------------------------------------------
-    ;;  empty list				( )	   	       0
-    ;;  list with 1 element		(6)		       6
-    ;;  list sums to zero & duplicates	(-2 1 0 1)	       0
+;; empy list  (count-inversions '())          0
+;;            (is-almost-sorted '()))        nil
+;; single element  (is-almost-sorted '(4))   nil
+;;                 (count-inversions '(4))    0
+;; is sorted   (is-almost-sorted  '(1 2 3 4)) nil
+;; 

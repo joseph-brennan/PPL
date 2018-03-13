@@ -11,13 +11,20 @@
 ;;  assumptions:
 
 (defun searcher (num lst)
-  (cond ((null lst)                                     0)
+  (cond ((null lst)
+         0)
 
-        ((listp (car lst))                             (+ (searcher num (car lst)) (searcher num (cdr lst))))
+        ((listp (car lst))
 
-        ((and (numberp (car lst)) (= num (car lst)))   (+ 1 (searcher num (cdr lst))))
+         (+ (searcher num (car lst)) (searcher num (cdr lst))))
 
-        (t                                             (searcher num (cdr lst)))
+        ((and (numberp (car lst)) (= num (car lst)))
+
+         (+ 1 (searcher num (cdr lst))))
+
+        (t
+
+         (searcher num (cdr lst)))
   )
 )
 
