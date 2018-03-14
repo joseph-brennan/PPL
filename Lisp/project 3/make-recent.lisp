@@ -24,7 +24,7 @@
 
 ;; takes after knowning word is the front of the list
 (defun rest-lst (word lst)
-  (cond ((null lst)    nil)
+  (cond ((null lst)               nil)
         ;; remove the old occurnece of the word
         ((equal word (car lst))  (rest-lst word (cdr lst)))
         ;; add every other element to the list in orginal order

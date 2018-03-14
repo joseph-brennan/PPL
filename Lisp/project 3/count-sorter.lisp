@@ -23,7 +23,7 @@
         ((= (count-inversions lst) 0)                       nil)
 
         ;; compare length to number of inversions
-        ((< (count-inversions lst) (* 0.2 (length lst)))   t)
+        ((<= (count-inversions lst) (* 0.2 (length lst)))   t)
 
         ;; falls outside being almost sorted
         (t                                                  nil)
