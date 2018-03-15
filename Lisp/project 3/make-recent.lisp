@@ -22,7 +22,7 @@
   )
 )
 
-;; takes after knowning word is the front of the list
+;; takes list knowning word is the front
 (defun rest-lst (word lst)
   (cond ((null lst)               nil)
         ;; remove the old occurnece of the word
@@ -38,4 +38,4 @@
 ;; empty list           (make-recent 'cat '())              ()
 ;; found at front (make-recent 'dog '(dog cat bird))   (dog cat bird)
 ;; middle of lst  (make-recent 'cat '(dog cat bird))   (cat dog bird)
-;; doesnt exist   (make-recent 'bird '(cat kitten dog puppy))
+;; doesnt exist   (make-recent 'bird '(cat kitten dog puppy))  (bird cat kitten dog puppy)

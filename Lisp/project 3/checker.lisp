@@ -10,66 +10,58 @@
 
 
 (defun checker (lst)
-  (cond ((null lst)
-         nil)
+  (cond ((null lst)         nil)
         ;; checks that there is a valid input
-        ((not (token-check lst))
-         ;; specililzed error message
-         (error-statement 1))
+        ((not (valid-token lst))
+         ;; specialized error message
+         (append (error-statement 1) lst))
 
-        ;; checks to see if its a nested list
+        ;; the first is a nested list
         ((listp (car lst))
-         ;; recursevely checks the inner list
-         (checker (car lst)))
+         ;; append the result of the nested to the result of the rest
+         ;; replacing the now checked nested with defualt 1
+         (append (checker (car lst)) (cons 1 (checker (cdr lst)))))
 
         ;; checks valid number in expected location
-        ((not (not-numeric (car lst)))
-          ;; specililzed error message
-         (error-statement 2))
+        ((not (valid-numeric (car lst)))
+          ;; specialized error message
+         (append (error-statement 2) (car lst)))
 
-        ;; checks for the know math operations
-        ((not (op-error (car (cdr lst))))
-         ;; specililzed error message
+        ;; checks for the known math operations
+        ((not (is-valid-op (car (cdr lst))))
+         ;; specialized error message
          (append (error-statement 3) (list (car (cdr lst)))))
 
-        ;; checks for nested list in second oprand
+         ;; checks to see if its a nested list
         ((listp (car (cdr (cdr lst))))
-         ;; recursevely checks in inner list
+          ;; recursevely checks the inner list
+          ;; we know its the last element so dont need the outer recusion
          (checker (car (cdr (cdr lst)))))
 
         ;; checks the second operand is a number
-        ((not (not-numeric (car (cdr (cdr lst)))))
-         (error-statement 2))
+        ((not (valid-numeric (car (cdr (cdr lst)))))
+         (append (error-statement 2) (car (cdr (cdr lst)))))
 
-        ;; the string is a valid and true math function
-        (t
-         (append (error-statement ()) '(true)))
+        ;; the string is a valid and true math function returns true
+        (t               t)
   )
 )
 
-;; wrong number of tokens in an expression
-(defun token-check (lst)
-  (cond ((null lst)           nil)
+;; wrong number of tokens in an expression returns false
+(defun valid-token (lst)
+ ;; checks the length of the list
+ (= (length lst) 3)
 
-        ;; checks the length of the list
-        ((= (length lst) 3))
-
-        (t                    nil)
-  )
 )
 
-;; operands not numeric
-(defun not-numeric (num)
-  (cond ((null num)            nil)
-        ;; checks if its a number
-        ((numberp num))
-
-        (t                     nil)
-  )
+;; operands not numeric returns fasle
+(defun valid-numeric (num)
+;; checks if its a number
+  (numberp num)
 )
 
 ;; invalid operator
-(defun op-error (op)
+(defun is-valid-op (op)
   (cond ((null op)   nil)
         ;; check to make sure its an atom
         ((not (atom op))   nil)
@@ -87,34 +79,31 @@
 )
 
 (defun error-statement (num)
-  (cond ((null num)   '(valid))
+  (cond ((null num)   nil)
         ((not (numberp num))       nil)
 
         ((= num 1)    '(wrong number of operands))
 
-        ((= num 2)    '(operands not numeric))
+        ((= num 2)    '(operand is not numeric))
 
         ((= num 3)    '(invalid operator))
-
-        (t                   '(valid))
-
   )
 )
 
 ;;  test plan for checker:
 ;;  category / description		data		expected result
                  ;;  ----------------------------------------------------------------------------------------------------
-;; number checks         (not-numeric 4)           t
-;;                       (not-numeric '4)          t
-;;                       (not-numeric  'plus)     nil
+;; number checks         (valid-numeric 4)           t
+;;                       (valid-numeric '4)          t
+;;                       (valid-numeric  'plus)     nil
 
-;; op-code checks        (op-error 'plus)          t
-;;                       (op-error 'minus)         t
-;;                       (op-error 5)              nil
+;; op-code checks        (is-valid-op 'plus)          t
+;;                       (is-valid-op 'minus)         t
+;;                       (is-valid-op 5)              nil
 
-;; token-check           (token-check '(a b c))        t
-;;                       (token-check '(1 plus 2))     t
-;;                       (token-check '(1 2))         nil
+;; valid-token           (valid-token '(a b c))        t
+;;                       (valid-token '(1 plus 2))     t
+;;                       (valid-token '(1 2))         nil
 
 ;; error                 (error-statement 1)   (wrong number of operands)
 ;;                       (error-statement 2)   (operands not numeric)
@@ -128,3 +117,5 @@
 ;; operands not numeric    (checker '(-4 plus (cat minus dog)))  ==>  nil
 ;; invalid operator "+"    (checker '((7 + 3) minus 12))  ==>  nil
 ;; operands not numeric    (checker '(-4 plus (cat minus dog)))  ==>  nil
+;; invalid operation "-"   (checker  '(25 - (17 plus 12)))
+;; invalid operation "plu" (checker  '(25 minus (17 plu 12)))   

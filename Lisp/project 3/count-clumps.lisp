@@ -39,7 +39,7 @@
         ;; atom check returns true if clump
         ((and (and (atom val) (atom (car lst)))
               (equal val (car lst)))                   t)
-   
+
         ;; number check for clump
         ((and (and (numberp val) (numberp (car lst)))
               (= val (car lst)))                       t)
@@ -52,6 +52,14 @@
 ;;  test plan for count groups:
 ;;  category / description		data		expected result
                  ;;  ----------------------------------------------------------------------------------------------------
+;; cump method        (clump 1 '(1 1 1 2))                           t
+;;                    (clump 2 '(1 2 2 5))                           nil
+
+;; problems with test because of lack of return this method now calls
+;; the main count-clumps method makeing expected retuns wrong
+     ; atom or num match  (matchan 1 '(1 1 1 2))                        (2)
+     ;                    (matchan 2 '(1 2 2 5))                     (1 2 2 5)
+
 ;; zero clumps        (count-clumps '(1 2 3))                         0
 ;; one clump        (count-clumps '(12 12 1 25))                      1
 ;; one clump words (count-clumps '(echo echo is this on))             1

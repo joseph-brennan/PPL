@@ -40,4 +40,5 @@
 ;;                       (untwin '(1 2 3))         (1 2 3)
 ;;                       (untwin '(1 1 2 2 3))     (1 2 3)
 
-;;numbers and atom  (untwin '( 1 2 3 a b c c 2 3 3)) (1 2 3 a b c 2 3 3)
+;;numbers and atom  (untwin '( 1 2 3 a b c c 2 3 3))        (1 2 3 a b c 2 3 3)
+;; atoms & numbers (untwin '(cat cat dog 1 3 3 4 5 5 dog))  (CAT DOG 1 3 4 5 DOG)

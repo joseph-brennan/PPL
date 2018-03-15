@@ -25,3 +25,4 @@
 ;; empty list              (flatten ())                             nil
 ;; nothing to flatten  (flatten '(day night))                   (day night)
 ;;so many (flatten '(a b (high low) () (e (f (deep) h))))   (a b high low e f deep h)
+;; deep list      (flatten '((((hi) bye))))                 (hi bye)
