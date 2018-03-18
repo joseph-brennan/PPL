@@ -7,7 +7,7 @@
 ;;               integer value is found.
 ;;  parameters:
 ;;       lst – a list of numbers, characters, and words
-;;       num - an integer
+;;       num - an integer wanting to find
 ;;  assumptions:
 
 (defun searcher (num lst)
