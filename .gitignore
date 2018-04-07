@@ -3,6 +3,7 @@
 # ignore files
 *.docx
 *.doc
+*.pptx
 
 # pdf isn't needed
 *.pdf
