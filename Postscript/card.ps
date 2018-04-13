@@ -1,19 +1,36 @@
 % Joey Brennan
 
+% this makes the whole card black
+/makeblack {
+    newpath
+    0 0 moveto
+    0 100 rlineto
+    200 0 rlineto
+    0 -200 rlineto
+    closepath
+    fill
+} def
+
+% recusive call here to make multiple circles
 /background {
-    %invert them becuase its a stack
+    %invert them becuase its a stack this is how to is variables
     /z exch def
     /y exch def
     /x exch def
+    /w exch def
+    /a {w .1 sub} def
+    /b {z 5 add} def
 
     /Times-Roman findfont
     1 setlinewidth
-    0 0 1 setrgbcolor
+    0 0 w setrgbcolor
     setfont
-    x y z 20 325 arc
+    x y z 30 325 arc
     stroke
+    z 50 ne {a 99 50 b background}{sign} ifelse
 } def
 
+% my info
 /procard {
     /Times-Roman findfont
     10 scalefont
@@ -25,33 +42,29 @@
     (303-907-8438) show
 
     newpath
-    93 5 moveto
+    90 5 moveto
     (jbrenn11@msudenver.edu) show
 
     newpath
-    56 40 moveto
+    60 40 moveto
     (Computer Science) show
 } def
 
+%signed
 /sign {
     /Times-Roman findfont
-    15 scalefont
+    20 scalefont
     1 setgray
     setfont
     newpath
-    50 50 moveto
+    45 50 moveto
     (Joey Brennan) show
 } def
 
 << /PageSize [200 100] >> setpagedevice
-newpath
-0 0 moveto
-0 100 rlineto
-200 0 rlineto
-0 -200 rlineto
-closepath
-fill
 
-99 50 20 background
-sign
+makeblack
+
+1 99 50 20 background
+
 procard
