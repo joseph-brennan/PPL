@@ -1,47 +1,73 @@
 /circle {
-newpath
-%the face
-0 0 100 0 360 arc
-gsave
-.2 .1 .2 setrgbcolor
-fill
-grestore
-stroke
+    newpath
+    %the face
+    0 0 100 0 360 arc
+    gsave
+    .2 .1 .2 setrgbcolor
+    fill
+    grestore
+    stroke
 
-%the right eye
-40 30 10 0 360 arc
-gsave
-.3 .7 .9 setrgbcolor
-fill
-grestore
-stroke
+    %the right eye
+    40 30 10 0 360 arc
+    gsave
+    .3 .7 .9 setrgbcolor
+    fill
+    grestore
+    stroke
 
-%left eye
--40 30 10 0 360 arc
-gsave
-.8 .6 .1 setrgbcolor
-fill
-grestore
-stroke
+    %left eye
+    -40 30 10 0 360 arc
+    gsave
+    .8 .6 .1 setrgbcolor
+    fill
+    grestore
+    stroke
 
-%the smile
-0 0 -60 20 160 arc
-closepath
-gsave
-.5 1 .5 setrgbcolor
-fill
-grestore
-stroke
+    %the smile
+    0 0 -60 20 160 arc
+    closepath
+    gsave
+    .5 1 .5 setrgbcolor
+    fill
+    grestore
+    stroke
 
 } def
 
+/sign {
+    /Times-Roman findfont
+    20 scalefont
+    setfont
+    newpath
+    500 10 moveto
+    (Joey Brennan) show
+} def
+
+%set the page size to standard letter
 letter
 
+sign
+%center cirlce
 306 396 translate
 circle
 
-153 100 translate
+150 150 translate
+180 rotate
 circle
+180 rotate
 
--306 -200 translate
+-300 0 translate
+180 rotate
 circle
+180 rotate
+
+0 -300 translate
+-90 rotate
+circle
+-270 rotate
+
+300 0 translate
+90 rotate
+circle
+270 rotate
