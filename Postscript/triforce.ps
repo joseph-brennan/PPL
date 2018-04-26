@@ -1,6 +1,33 @@
 % Joey Brennan
 
+/tri {
+    /a exch def
+    /d exch def
+    /b {2 mul} def
+    /c {4 mul} def
+    newpath
 
+    a a 2 div neg moveto
+
+    a b neg 0 rlineto
+    d rotate
+
+    a a b rlineto
+
+    closepath
+    stroke
+} def
+
+/recursion {
+    /a exch def
+    /b exch def
+    /c exch def
+    /d exch def
+
+
+
+
+} def
 
 /sign {
     /Times-Roman findfont
@@ -10,3 +37,14 @@
     500 10 moveto
     (Joey Brennan) show
 } def
+
+letter
+sign
+
+%center cirlce
+306 396 translate
+newpath
+0 0 5 0 360 arc
+stroke
+
+-5 50 tri
