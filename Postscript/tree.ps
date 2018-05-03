@@ -1,0 +1,84 @@
+%signed
+/sign {
+    /Times-Roman findfont
+    20 scalefont
+    setfont
+    newpath
+    500 10 moveto
+    (Joey Brennan) show
+    0 0 moveto
+} def
+
+/circle {
+    /a exch def
+    /b exch def
+
+    newpath
+    0 setgray
+    b a 50 0 360 arc
+    fill
+    stroke
+} def
+
+/leftnode {
+    /e exch def
+    newpath
+
+    .5 setgray
+
+    30 neg 30 neg moveto
+
+    40 neg 60 neg rlineto
+    stroke
+
+    80 neg 120 neg circle
+
+    .5 setgray
+    80 neg 120 neg moveto
+    e 20 string cvs show
+} def
+
+/rightnode {
+    /d exch def
+    newpath
+
+    .5 setgray
+
+    30 30 neg moveto
+
+    40 60 neg rlineto
+    stroke
+
+    80 120 neg circle
+
+    .5 setgray
+    70 120 neg moveto
+    d neg 20 string cvs show
+} def
+
+/tree {
+    /a exch def
+    /b exch def
+    /c exch def
+% c is the head node?
+    0 0 circle
+
+    10 neg 0 moveto
+
+    .5 setgray
+
+    c 20 string cvs show
+
+    a
+     c lt {a leftnode} {a rightnode} ifelse
+
+    b
+     c gt {b leftnode} {b rightnode} ifelse
+} def
+
+
+letter
+sign
+
+306 396 translate
+10 5 15 tree

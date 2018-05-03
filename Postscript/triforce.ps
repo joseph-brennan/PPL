@@ -1,50 +1,63 @@
-% Joey Brennan
-
-/tri {
-    /a exch def
-    /d exch def
-    /b {2 mul} def
-    /c {4 mul} def
-    newpath
-
-    a a 2 div neg moveto
-
-    a b neg 0 rlineto
-    d rotate
-
-    a a b rlineto
-
-    closepath
-    stroke
-} def
-
-/recursion {
-    /a exch def
-    /b exch def
-    /c exch def
-    /d exch def
-
-
-
-
-} def
-
+%signed
 /sign {
     /Times-Roman findfont
     20 scalefont
     setfont
     newpath
-    500 10 moveto
+    500 100 moveto
     (Joey Brennan) show
+    0 0 moveto
 } def
 
 letter
 sign
 
-%center cirlce
-306 396 translate
-newpath
-0 0 5 0 360 arc
-stroke
+/maxdepth 10 def
+/length 500 def
+/xoffset 60 def
+/yoffset 300 def
+/root3 1.7320508 def
 
--5 50 tri
+% draw a (roughly) equilateral triangle
+/triangle {
+    newpath
+    x y moveto
+    a 0 rlineto
+    120 rotate
+    a 0 rlineto
+    240 rotate
+    closepath
+
+    stroke
+} def
+
+% usage: a x y depth rec
+% where a is the side length, (x,y) are the coords of the lower
+% left corner, and depth is the recursion depth
+/rec {
+    /depth exch def
+    /y exch def
+    /x exch def
+    /a exch def
+    triangle
+    rand 100 mod 100 div rand 100 mod 100 div rand 100 mod 100 div  setrgbcolor
+    depth maxdepth lt
+    {
+        /newa a 2 div def
+        /newdepth depth 1 add def
+        newa x y newdepth
+        newa x a 4 div add
+        y root3 a mul
+        4 div add
+        newdepth
+        newa x newa add
+        y newdepth rec rec rec
+    }
+    if
+} def
+
+
+.5 setlinewidth
+length xoffset yoffset 1 rec
+
+showpage
